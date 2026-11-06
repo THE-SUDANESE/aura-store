@@ -56,5 +56,7 @@ export default auth((req) => {
 
 export const config = {
   // يشمل كل ما تحت /api/admin (بما فيها المسارات المتداخلة)
-  matcher: ["/api/admin/:path*", "/account", "/account/.*", "/auth/login"],
+  // في Next.js صيغة الـ matcher ليست regex: :path* تعني «صفر أو أكثر من المقاطع»
+  // لذلك :path* في /account/:path* تغطي /account نفسها و/account/orders وغيرها
+  matcher: ["/api/admin/:path*", "/account/:path*", "/auth/login"],
 };
