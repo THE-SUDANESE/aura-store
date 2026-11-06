@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000" role="img" aria-label="AURA LINEN">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F4EFE6"/><stop offset="1" stop-color="#FDFBF7"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.42" r="0.55">
+      <stop offset="0" stop-color="#E9DECB" stop-opacity="0.6"/>
+      <stop offset="1" stop-color="#E9DECB" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <circle cx="400" cy="500" r="300" fill="url(#glow)"/>
+  <text x="400" y="112" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="30" letter-spacing="14" fill="#0A0A0A" opacity="0.72">AURA</text>
+  
+    <g stroke="#C9B79C" stroke-width="8" stroke-linejoin="round">
+      <path d="M306 372 L364 338 Q400 366 436 338 L494 372 L556 448 L498 492 L484 470 L484 704 L316 704 L316 470 L302 492 L244 448 Z"
+            fill="#C9B79C" fill-opacity="0.9"/>
+      <path d="M364 338 Q400 394 436 338" fill="none" stroke-opacity="0.5"/>
+    </g>
+  <text x="400" y="922" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="13" letter-spacing="7" fill="#0A0A0A" opacity="0.45">CLOTHING</text>
+</svg>

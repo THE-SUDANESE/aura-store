@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000" role="img" aria-label="AURA RECTANGLE">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111111"/><stop offset="1" stop-color="#232323"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.42" r="0.55">
+      <stop offset="0" stop-color="#3A3A3A" stop-opacity="0.6"/>
+      <stop offset="1" stop-color="#3A3A3A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <circle cx="400" cy="500" r="300" fill="url(#glow)"/>
+  <text x="400" y="112" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="30" letter-spacing="14" fill="#F5F1EA" opacity="0.72">AURA</text>
+  <g transform="translate(-120,-150) scale(1.35)">
+    <g stroke="#8E979C" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="168" y="438" width="184" height="124" rx="38" fill="#31404A" fill-opacity="0.92"/>
+      <rect x="448" y="438" width="184" height="124" rx="38" fill="#31404A" fill-opacity="0.92"/>
+      <path d="M352 482 q48 -20 96 0"/>
+      <path d="M168 470 L108 436"/>
+      <path d="M632 470 L692 436"/>
+    </g></g>
+  <text x="400" y="922" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="13" letter-spacing="7" fill="#F5F1EA" opacity="0.45">SUNGLASSES</text>
+</svg>

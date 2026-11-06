@@ -1,0 +1,1662 @@
+[
+  {
+    "page": 1,
+    "file": "aura-sun-01.jpg",
+    "url": "/products/real/aura-sun-01.jpg",
+    "bytes": 96568,
+    "colors": {
+      "lens": {
+        "hue": 0.385,
+        "sat": 0.132,
+        "light": 0.101,
+        "count": 362
+      },
+      "frame": {
+        "hue": 0.23,
+        "sat": 0.068,
+        "light": 0.093,
+        "count": 218
+      }
+    }
+  },
+  {
+    "page": 2,
+    "file": "aura-sun-02.jpg",
+    "url": "/products/real/aura-sun-02.jpg",
+    "bytes": 93520,
+    "colors": {
+      "lens": {
+        "hue": 0.069,
+        "sat": 0.308,
+        "light": 0.469,
+        "count": 1138
+      },
+      "frame": {
+        "hue": 0.248,
+        "sat": 0.124,
+        "light": 0.119,
+        "count": 221
+      }
+    }
+  },
+  {
+    "page": 3,
+    "file": "aura-sun-03.jpg",
+    "url": "/products/real/aura-sun-03.jpg",
+    "bytes": 94366,
+    "colors": {
+      "lens": {
+        "hue": 0.391,
+        "sat": 0.138,
+        "light": 0.151,
+        "count": 365
+      },
+      "frame": {
+        "hue": 0.388,
+        "sat": 0.129,
+        "light": 0.102,
+        "count": 152
+      }
+    }
+  },
+  {
+    "page": 4,
+    "file": "aura-sun-04.jpg",
+    "url": "/products/real/aura-sun-04.jpg",
+    "bytes": 87509,
+    "colors": {
+      "lens": {
+        "hue": 0.506,
+        "sat": 0.165,
+        "light": 0.096,
+        "count": 462
+      },
+      "frame": {
+        "hue": 0.446,
+        "sat": 0.144,
+        "light": 0.099,
+        "count": 159
+      }
+    }
+  },
+  {
+    "page": 5,
+    "file": "aura-sun-05.jpg",
+    "url": "/products/real/aura-sun-05.jpg",
+    "bytes": 91439,
+    "colors": {
+      "lens": {
+        "hue": 0.432,
+        "sat": 0.097,
+        "light": 0.111,
+        "count": 395
+      },
+      "frame": {
+        "hue": 0.391,
+        "sat": 0.105,
+        "light": 0.103,
+        "count": 159
+      }
+    }
+  },
+  {
+    "page": 6,
+    "file": "aura-sun-06.jpg",
+    "url": "/products/real/aura-sun-06.jpg",
+    "bytes": 89868,
+    "colors": {
+      "lens": {
+        "hue": 0.079,
+        "sat": 0.283,
+        "light": 0.429,
+        "count": 989
+      },
+      "frame": {
+        "hue": 0.446,
+        "sat": 0.16,
+        "light": 0.104,
+        "count": 126
+      }
+    }
+  },
+  {
+    "page": 7,
+    "file": "aura-sun-07.jpg",
+    "url": "/products/real/aura-sun-07.jpg",
+    "bytes": 94038,
+    "colors": {
+      "lens": {
+        "hue": 0.465,
+        "sat": 0.114,
+        "light": 0.11,
+        "count": 392
+      },
+      "frame": {
+        "hue": 0.428,
+        "sat": 0.126,
+        "light": 0.107,
+        "count": 159
+      }
+    }
+  },
+  {
+    "page": 8,
+    "file": "aura-sun-08.jpg",
+    "url": "/products/real/aura-sun-08.jpg",
+    "bytes": 95127,
+    "colors": {
+      "lens": {
+        "hue": 0.304,
+        "sat": 0.124,
+        "light": 0.122,
+        "count": 411
+      },
+      "frame": {
+        "hue": 0.307,
+        "sat": 0.1,
+        "light": 0.101,
+        "count": 123
+      }
+    }
+  },
+  {
+    "page": 9,
+    "file": "aura-sun-09.jpg",
+    "url": "/products/real/aura-sun-09.jpg",
+    "bytes": 91185,
+    "colors": {
+      "lens": {
+        "hue": 0.565,
+        "sat": 0.185,
+        "light": 0.275,
+        "count": 473
+      },
+      "frame": {
+        "hue": 0.339,
+        "sat": 0.11,
+        "light": 0.118,
+        "count": 105
+      }
+    }
+  },
+  {
+    "page": 10,
+    "file": "aura-sun-10.jpg",
+    "url": "/products/real/aura-sun-10.jpg",
+    "bytes": 91646,
+    "colors": {
+      "lens": {
+        "hue": 0.495,
+        "sat": 0.167,
+        "light": 0.078,
+        "count": 442
+      },
+      "frame": {
+        "hue": 0.378,
+        "sat": 0.096,
+        "light": 0.09,
+        "count": 120
+      }
+    }
+  },
+  {
+    "page": 11,
+    "file": "aura-sun-11.jpg",
+    "url": "/products/real/aura-sun-11.jpg",
+    "bytes": 79012,
+    "colors": {
+      "lens": {
+        "hue": 0.485,
+        "sat": 0.156,
+        "light": 0.099,
+        "count": 436
+      },
+      "frame": {
+        "hue": 0.395,
+        "sat": 0.165,
+        "light": 0.082,
+        "count": 197
+      }
+    }
+  },
+  {
+    "page": 12,
+    "file": "aura-sun-12.jpg",
+    "url": "/products/real/aura-sun-12.jpg",
+    "bytes": 84520,
+    "colors": {
+      "lens": {
+        "hue": 0.556,
+        "sat": 0.15,
+        "light": 0.097,
+        "count": 685
+      },
+      "frame": {
+        "hue": 0.466,
+        "sat": 0.133,
+        "light": 0.105,
+        "count": 217
+      }
+    }
+  },
+  {
+    "page": 13,
+    "file": "aura-sun-13.jpg",
+    "url": "/products/real/aura-sun-13.jpg",
+    "bytes": 86005,
+    "colors": {
+      "lens": {
+        "hue": 0.015,
+        "sat": 0.527,
+        "light": 0.236,
+        "count": 1396
+      },
+      "frame": {
+        "hue": 0.066,
+        "sat": 0.224,
+        "light": 0.172,
+        "count": 220
+      }
+    }
+  },
+  {
+    "page": 14,
+    "file": "aura-sun-14.jpg",
+    "url": "/products/real/aura-sun-14.jpg",
+    "bytes": 81706,
+    "colors": {
+      "lens": {
+        "hue": 0.625,
+        "sat": 0.231,
+        "light": 0.111,
+        "count": 1122
+      },
+      "frame": {
+        "hue": 0.369,
+        "sat": 0.128,
+        "light": 0.085,
+        "count": 222
+      }
+    }
+  },
+  {
+    "page": 15,
+    "file": "aura-sun-15.jpg",
+    "url": "/products/real/aura-sun-15.jpg",
+    "bytes": 80178,
+    "colors": {
+      "lens": {
+        "hue": 0.736,
+        "sat": 0.237,
+        "light": 0.152,
+        "count": 889
+      },
+      "frame": {
+        "hue": 0.243,
+        "sat": 0.123,
+        "light": 0.108,
+        "count": 194
+      }
+    }
+  },
+  {
+    "page": 16,
+    "file": "aura-sun-16.jpg",
+    "url": "/products/real/aura-sun-16.jpg",
+    "bytes": 80113,
+    "colors": {
+      "lens": {
+        "hue": 0.554,
+        "sat": 0.246,
+        "light": 0.081,
+        "count": 1115
+      },
+      "frame": {
+        "hue": 0.408,
+        "sat": 0.113,
+        "light": 0.098,
+        "count": 197
+      }
+    }
+  },
+  {
+    "page": 17,
+    "file": "aura-sun-17.jpg",
+    "url": "/products/real/aura-sun-17.jpg",
+    "bytes": 79517,
+    "colors": {
+      "lens": {
+        "hue": 0.541,
+        "sat": 0.206,
+        "light": 0.079,
+        "count": 828
+      },
+      "frame": {
+        "hue": 0.466,
+        "sat": 0.163,
+        "light": 0.081,
+        "count": 222
+      }
+    }
+  },
+  {
+    "page": 18,
+    "file": "aura-sun-18.jpg",
+    "url": "/products/real/aura-sun-18.jpg",
+    "bytes": 87581,
+    "colors": {
+      "lens": {
+        "hue": 0.015,
+        "sat": 0.547,
+        "light": 0.127,
+        "count": 1052
+      },
+      "frame": {
+        "hue": 0.052,
+        "sat": 0.327,
+        "light": 0.188,
+        "count": 372
+      }
+    }
+  },
+  {
+    "page": 19,
+    "file": "aura-sun-19.jpg",
+    "url": "/products/real/aura-sun-19.jpg",
+    "bytes": 86003,
+    "colors": {
+      "lens": {
+        "hue": 0.727,
+        "sat": 0.256,
+        "light": 0.175,
+        "count": 994
+      },
+      "frame": {
+        "hue": 0.493,
+        "sat": 0.142,
+        "light": 0.109,
+        "count": 191
+      }
+    }
+  },
+  {
+    "page": 20,
+    "file": "aura-sun-20.jpg",
+    "url": "/products/real/aura-sun-20.jpg",
+    "bytes": 79354,
+    "colors": {
+      "lens": {
+        "hue": 0.526,
+        "sat": 0.165,
+        "light": 0.096,
+        "count": 580
+      },
+      "frame": {
+        "hue": 0.376,
+        "sat": 0.118,
+        "light": 0.118,
+        "count": 191
+      }
+    }
+  },
+  {
+    "page": 21,
+    "file": "aura-sun-21.jpg",
+    "url": "/products/real/aura-sun-21.jpg",
+    "bytes": 78282,
+    "colors": {
+      "lens": {
+        "hue": 0.519,
+        "sat": 0.198,
+        "light": 0.073,
+        "count": 935
+      },
+      "frame": {
+        "hue": 0.485,
+        "sat": 0.221,
+        "light": 0.075,
+        "count": 384
+      }
+    }
+  },
+  {
+    "page": 22,
+    "file": "aura-sun-22.jpg",
+    "url": "/products/real/aura-sun-22.jpg",
+    "bytes": 75249,
+    "colors": {
+      "lens": {
+        "hue": 0.556,
+        "sat": 0.183,
+        "light": 0.083,
+        "count": 625
+      },
+      "frame": {
+        "hue": 0.376,
+        "sat": 0.148,
+        "light": 0.071,
+        "count": 265
+      }
+    }
+  },
+  {
+    "page": 23,
+    "file": "aura-sun-23.jpg",
+    "url": "/products/real/aura-sun-23.jpg",
+    "bytes": 67045,
+    "colors": {
+      "lens": {
+        "hue": 0.556,
+        "sat": 0.225,
+        "light": 0.09,
+        "count": 1825
+      },
+      "frame": {
+        "hue": 0.555,
+        "sat": 0.099,
+        "light": 0.162,
+        "count": 19
+      }
+    }
+  },
+  {
+    "page": 24,
+    "file": "aura-sun-24.jpg",
+    "url": "/products/real/aura-sun-24.jpg",
+    "bytes": 74349,
+    "colors": {
+      "lens": {
+        "hue": 0.111,
+        "sat": 0.36,
+        "light": 0.395,
+        "count": 1887
+      },
+      "frame": {
+        "hue": 0.478,
+        "sat": 0.107,
+        "light": 0.108,
+        "count": 171
+      }
+    }
+  },
+  {
+    "page": 25,
+    "file": "aura-sun-25.jpg",
+    "url": "/products/real/aura-sun-25.jpg",
+    "bytes": 79231,
+    "colors": {
+      "lens": {
+        "hue": 0.669,
+        "sat": 0.285,
+        "light": 0.19,
+        "count": 1352
+      },
+      "frame": {
+        "hue": 0.454,
+        "sat": 0.142,
+        "light": 0.111,
+        "count": 129
+      }
+    }
+  },
+  {
+    "page": 26,
+    "file": "aura-sun-26.jpg",
+    "url": "/products/real/aura-sun-26.jpg",
+    "bytes": 74981,
+    "colors": {
+      "lens": {
+        "hue": 0.018,
+        "sat": 0.44,
+        "light": 0.154,
+        "count": 1395
+      },
+      "frame": {
+        "hue": 0.363,
+        "sat": 0.194,
+        "light": 0.106,
+        "count": 211
+      }
+    }
+  },
+  {
+    "page": 27,
+    "file": "aura-sun-27.jpg",
+    "url": "/products/real/aura-sun-27.jpg",
+    "bytes": 71029,
+    "colors": {
+      "lens": {
+        "hue": 0.041,
+        "sat": 0.398,
+        "light": 0.228,
+        "count": 2104
+      },
+      "frame": {
+        "hue": 0.387,
+        "sat": 0.122,
+        "light": 0.126,
+        "count": 114
+      }
+    }
+  },
+  {
+    "page": 28,
+    "file": "aura-sun-28.jpg",
+    "url": "/products/real/aura-sun-28.jpg",
+    "bytes": 70037,
+    "colors": {
+      "lens": {
+        "hue": 0.617,
+        "sat": 0.228,
+        "light": 0.119,
+        "count": 1006
+      },
+      "frame": {
+        "hue": 0.435,
+        "sat": 0.083,
+        "light": 0.121,
+        "count": 42
+      }
+    }
+  },
+  {
+    "page": 29,
+    "file": "aura-sun-29.jpg",
+    "url": "/products/real/aura-sun-29.jpg",
+    "bytes": 73263,
+    "colors": {
+      "lens": {
+        "hue": 0.613,
+        "sat": 0.156,
+        "light": 0.293,
+        "count": 796
+      },
+      "frame": {
+        "hue": 0.529,
+        "sat": 0.088,
+        "light": 0.118,
+        "count": 113
+      }
+    }
+  },
+  {
+    "page": 30,
+    "file": "aura-sun-30.jpg",
+    "url": "/products/real/aura-sun-30.jpg",
+    "bytes": 72970,
+    "colors": {
+      "lens": {
+        "hue": 0.648,
+        "sat": 0.111,
+        "light": 0.127,
+        "count": 502
+      },
+      "frame": {
+        "hue": 0.532,
+        "sat": 0.09,
+        "light": 0.116,
+        "count": 153
+      }
+    }
+  },
+  {
+    "page": 31,
+    "file": "aura-sun-31.jpg",
+    "url": "/products/real/aura-sun-31.jpg",
+    "bytes": 40598,
+    "colors": {
+      "lens": {
+        "hue": 0.047,
+        "sat": 0.663,
+        "light": 0.27,
+        "count": 7189
+      },
+      "frame": {
+        "hue": 0.047,
+        "sat": 0.662,
+        "light": 0.252,
+        "count": 1697
+      }
+    }
+  },
+  {
+    "page": 32,
+    "file": "aura-sun-32.jpg",
+    "url": "/products/real/aura-sun-32.jpg",
+    "bytes": 82965,
+    "colors": {
+      "lens": {
+        "hue": 0.016,
+        "sat": 0.546,
+        "light": 0.18,
+        "count": 1112
+      },
+      "frame": {
+        "hue": 0.039,
+        "sat": 0.381,
+        "light": 0.189,
+        "count": 337
+      }
+    }
+  },
+  {
+    "page": 33,
+    "file": "aura-sun-33.jpg",
+    "url": "/products/real/aura-sun-33.jpg",
+    "bytes": 72816,
+    "colors": {
+      "lens": {
+        "hue": 0.012,
+        "sat": 0.5,
+        "light": 0.152,
+        "count": 1183
+      },
+      "frame": {
+        "hue": 0.361,
+        "sat": 0.126,
+        "light": 0.076,
+        "count": 178
+      }
+    }
+  },
+  {
+    "page": 34,
+    "file": "aura-sun-34.jpg",
+    "url": "/products/real/aura-sun-34.jpg",
+    "bytes": 72148,
+    "colors": {
+      "lens": {
+        "hue": 0.665,
+        "sat": 0.216,
+        "light": 0.116,
+        "count": 906
+      },
+      "frame": {
+        "hue": 0.293,
+        "sat": 0.174,
+        "light": 0.105,
+        "count": 211
+      }
+    }
+  },
+  {
+    "page": 35,
+    "file": "aura-sun-35.jpg",
+    "url": "/products/real/aura-sun-35.jpg",
+    "bytes": 68784,
+    "colors": {
+      "lens": {
+        "hue": 0.498,
+        "sat": 0.157,
+        "light": 0.086,
+        "count": 745
+      },
+      "frame": {
+        "hue": 0.359,
+        "sat": 0.18,
+        "light": 0.071,
+        "count": 240
+      }
+    }
+  },
+  {
+    "page": 36,
+    "file": "aura-sun-36.jpg",
+    "url": "/products/real/aura-sun-36.jpg",
+    "bytes": 80586,
+    "colors": {
+      "lens": {
+        "hue": 0.025,
+        "sat": 0.53,
+        "light": 0.15,
+        "count": 1347
+      },
+      "frame": {
+        "hue": 0.1,
+        "sat": 0.196,
+        "light": 0.118,
+        "count": 155
+      }
+    }
+  },
+  {
+    "page": 37,
+    "file": "aura-sun-37.jpg",
+    "url": "/products/real/aura-sun-37.jpg",
+    "bytes": 75500,
+    "colors": {
+      "lens": {
+        "hue": 0.526,
+        "sat": 0.185,
+        "light": 0.073,
+        "count": 902
+      },
+      "frame": {
+        "hue": 0.49,
+        "sat": 0.189,
+        "light": 0.086,
+        "count": 420
+      }
+    }
+  },
+  {
+    "page": 38,
+    "file": "aura-sun-38.jpg",
+    "url": "/products/real/aura-sun-38.jpg",
+    "bytes": 75300,
+    "colors": {
+      "lens": {
+        "hue": 0.168,
+        "sat": 0.198,
+        "light": 0.088,
+        "count": 635
+      },
+      "frame": {
+        "hue": 0.416,
+        "sat": 0.193,
+        "light": 0.064,
+        "count": 247
+      }
+    }
+  },
+  {
+    "page": 39,
+    "file": "aura-sun-39.jpg",
+    "url": "/products/real/aura-sun-39.jpg",
+    "bytes": 78817,
+    "colors": {
+      "lens": {
+        "hue": 0.62,
+        "sat": 0.217,
+        "light": 0.097,
+        "count": 917
+      },
+      "frame": {
+        "hue": 0.586,
+        "sat": 0.136,
+        "light": 0.084,
+        "count": 187
+      }
+    }
+  },
+  {
+    "page": 40,
+    "file": "aura-sun-40.jpg",
+    "url": "/products/real/aura-sun-40.jpg",
+    "bytes": 72749,
+    "colors": {
+      "lens": {
+        "hue": 0.535,
+        "sat": 0.161,
+        "light": 0.093,
+        "count": 768
+      },
+      "frame": {
+        "hue": 0.44,
+        "sat": 0.112,
+        "light": 0.094,
+        "count": 191
+      }
+    }
+  },
+  {
+    "page": 41,
+    "file": "aura-sun-41.jpg",
+    "url": "/products/real/aura-sun-41.jpg",
+    "bytes": 79582,
+    "colors": {
+      "lens": {
+        "hue": 0.844,
+        "sat": 0.283,
+        "light": 0.175,
+        "count": 780
+      },
+      "frame": {
+        "hue": 0.388,
+        "sat": 0.117,
+        "light": 0.097,
+        "count": 147
+      }
+    }
+  },
+  {
+    "page": 42,
+    "file": "aura-sun-42.jpg",
+    "url": "/products/real/aura-sun-42.jpg",
+    "bytes": 73710,
+    "colors": {
+      "lens": {
+        "hue": 0.607,
+        "sat": 0.21,
+        "light": 0.118,
+        "count": 736
+      },
+      "frame": {
+        "hue": 0.37,
+        "sat": 0.119,
+        "light": 0.072,
+        "count": 168
+      }
+    }
+  },
+  {
+    "page": 43,
+    "file": "aura-sun-43.jpg",
+    "url": "/products/real/aura-sun-43.jpg",
+    "bytes": 71717,
+    "colors": {
+      "lens": {
+        "hue": 0.526,
+        "sat": 0.204,
+        "light": 0.086,
+        "count": 1059
+      },
+      "frame": {
+        "hue": 0.388,
+        "sat": 0.142,
+        "light": 0.097,
+        "count": 127
+      }
+    }
+  },
+  {
+    "page": 44,
+    "file": "aura-sun-44.jpg",
+    "url": "/products/real/aura-sun-44.jpg",
+    "bytes": 75303,
+    "colors": {
+      "lens": {
+        "hue": 0.548,
+        "sat": 0.164,
+        "light": 0.115,
+        "count": 537
+      },
+      "frame": {
+        "hue": 0.451,
+        "sat": 0.148,
+        "light": 0.125,
+        "count": 176
+      }
+    }
+  },
+  {
+    "page": 45,
+    "file": "aura-sun-45.jpg",
+    "url": "/products/real/aura-sun-45.jpg",
+    "bytes": 81914,
+    "colors": {
+      "lens": {
+        "hue": 0.018,
+        "sat": 0.564,
+        "light": 0.221,
+        "count": 1453
+      },
+      "frame": {
+        "hue": 0.235,
+        "sat": 0.181,
+        "light": 0.144,
+        "count": 213
+      }
+    }
+  },
+  {
+    "page": 46,
+    "file": "aura-sun-46.jpg",
+    "url": "/products/real/aura-sun-46.jpg",
+    "bytes": 80039,
+    "colors": {
+      "lens": {
+        "hue": 0.62,
+        "sat": 0.254,
+        "light": 0.142,
+        "count": 916
+      },
+      "frame": {
+        "hue": 0.39,
+        "sat": 0.103,
+        "light": 0.101,
+        "count": 180
+      }
+    }
+  },
+  {
+    "page": 47,
+    "file": "aura-sun-47.jpg",
+    "url": "/products/real/aura-sun-47.jpg",
+    "bytes": 72196,
+    "colors": {
+      "lens": {
+        "hue": 0.035,
+        "sat": 0.497,
+        "light": 0.181,
+        "count": 1099
+      },
+      "frame": {
+        "hue": 0.356,
+        "sat": 0.137,
+        "light": 0.096,
+        "count": 207
+      }
+    }
+  },
+  {
+    "page": 48,
+    "file": "aura-sun-48.jpg",
+    "url": "/products/real/aura-sun-48.jpg",
+    "bytes": 83676,
+    "colors": {
+      "lens": {
+        "hue": 0.018,
+        "sat": 0.541,
+        "light": 0.215,
+        "count": 1180
+      },
+      "frame": {
+        "hue": 0.083,
+        "sat": 0.227,
+        "light": 0.192,
+        "count": 236
+      }
+    }
+  },
+  {
+    "page": 49,
+    "file": "aura-sun-49.jpg",
+    "url": "/products/real/aura-sun-49.jpg",
+    "bytes": 81540,
+    "colors": {
+      "lens": {
+        "hue": 0.478,
+        "sat": 0.18,
+        "light": 0.095,
+        "count": 603
+      },
+      "frame": {
+        "hue": 0.537,
+        "sat": 0.157,
+        "light": 0.106,
+        "count": 245
+      }
+    }
+  },
+  {
+    "page": 50,
+    "file": "aura-sun-50.jpg",
+    "url": "/products/real/aura-sun-50.jpg",
+    "bytes": 84881,
+    "colors": {
+      "lens": {
+        "hue": 0.89,
+        "sat": 0.283,
+        "light": 0.167,
+        "count": 798
+      },
+      "frame": {
+        "hue": 0.467,
+        "sat": 0.12,
+        "light": 0.099,
+        "count": 211
+      }
+    }
+  },
+  {
+    "page": 51,
+    "file": "aura-sun-51.jpg",
+    "url": "/products/real/aura-sun-51.jpg",
+    "bytes": 78634,
+    "colors": {
+      "lens": {
+        "hue": 0.542,
+        "sat": 0.249,
+        "light": 0.069,
+        "count": 1045
+      },
+      "frame": {
+        "hue": 0.472,
+        "sat": 0.177,
+        "light": 0.081,
+        "count": 272
+      }
+    }
+  },
+  {
+    "page": 52,
+    "file": "aura-sun-52.jpg",
+    "url": "/products/real/aura-sun-52.jpg",
+    "bytes": 81553,
+    "colors": {
+      "lens": {
+        "hue": 0.552,
+        "sat": 0.221,
+        "light": 0.097,
+        "count": 1782
+      },
+      "frame": {
+        "hue": 0.464,
+        "sat": 0.153,
+        "light": 0.107,
+        "count": 289
+      }
+    }
+  },
+  {
+    "page": 53,
+    "file": "aura-sun-53.jpg",
+    "url": "/products/real/aura-sun-53.jpg",
+    "bytes": 80048,
+    "colors": {
+      "lens": {
+        "hue": 0.552,
+        "sat": 0.166,
+        "light": 0.095,
+        "count": 517
+      },
+      "frame": {
+        "hue": 0.43,
+        "sat": 0.14,
+        "light": 0.102,
+        "count": 222
+      }
+    }
+  },
+  {
+    "page": 54,
+    "file": "aura-sun-54.jpg",
+    "url": "/products/real/aura-sun-54.jpg",
+    "bytes": 81817,
+    "colors": {
+      "lens": {
+        "hue": 0.641,
+        "sat": 0.241,
+        "light": 0.161,
+        "count": 865
+      },
+      "frame": {
+        "hue": 0.507,
+        "sat": 0.183,
+        "light": 0.104,
+        "count": 365
+      }
+    }
+  },
+  {
+    "page": 55,
+    "file": "aura-sun-55.jpg",
+    "url": "/products/real/aura-sun-55.jpg",
+    "bytes": 79011,
+    "colors": {
+      "lens": {
+        "hue": 0.019,
+        "sat": 0.423,
+        "light": 0.107,
+        "count": 784
+      },
+      "frame": {
+        "hue": 0.083,
+        "sat": 0.315,
+        "light": 0.101,
+        "count": 406
+      }
+    }
+  },
+  {
+    "page": 56,
+    "file": "aura-sun-56.jpg",
+    "url": "/products/real/aura-sun-56.jpg",
+    "bytes": 77306,
+    "colors": {
+      "lens": {
+        "hue": 0.672,
+        "sat": 0.255,
+        "light": 0.155,
+        "count": 1114
+      },
+      "frame": {
+        "hue": 0.426,
+        "sat": 0.122,
+        "light": 0.098,
+        "count": 205
+      }
+    }
+  },
+  {
+    "page": 57,
+    "file": "aura-sun-57.jpg",
+    "url": "/products/real/aura-sun-57.jpg",
+    "bytes": 77640,
+    "colors": {
+      "lens": {
+        "hue": 0.561,
+        "sat": 0.225,
+        "light": 0.081,
+        "count": 1218
+      },
+      "frame": {
+        "hue": 0.513,
+        "sat": 0.197,
+        "light": 0.072,
+        "count": 439
+      }
+    }
+  },
+  {
+    "page": 58,
+    "file": "aura-sun-58.jpg",
+    "url": "/products/real/aura-sun-58.jpg",
+    "bytes": 84044,
+    "colors": {
+      "lens": {
+        "hue": 0.536,
+        "sat": 0.194,
+        "light": 0.111,
+        "count": 1135
+      },
+      "frame": {
+        "hue": 0.516,
+        "sat": 0.156,
+        "light": 0.103,
+        "count": 490
+      }
+    }
+  },
+  {
+    "page": 59,
+    "file": "aura-sun-59.jpg",
+    "url": "/products/real/aura-sun-59.jpg",
+    "bytes": 83299,
+    "colors": {
+      "lens": {
+        "hue": 0.78,
+        "sat": 0.262,
+        "light": 0.192,
+        "count": 895
+      },
+      "frame": {
+        "hue": 0.488,
+        "sat": 0.192,
+        "light": 0.122,
+        "count": 220
+      }
+    }
+  },
+  {
+    "page": 60,
+    "file": "aura-sun-60.jpg",
+    "url": "/products/real/aura-sun-60.jpg",
+    "bytes": 85669,
+    "colors": {
+      "lens": {
+        "hue": 0.501,
+        "sat": 0.105,
+        "light": 0.098,
+        "count": 553
+      },
+      "frame": {
+        "hue": 0.423,
+        "sat": 0.101,
+        "light": 0.095,
+        "count": 270
+      }
+    }
+  },
+  {
+    "page": 61,
+    "file": "aura-sun-61.jpg",
+    "url": "/products/real/aura-sun-61.jpg",
+    "bytes": 83644,
+    "colors": {
+      "lens": {
+        "hue": 0.661,
+        "sat": 0.24,
+        "light": 0.182,
+        "count": 1036
+      },
+      "frame": {
+        "hue": 0.544,
+        "sat": 0.193,
+        "light": 0.12,
+        "count": 176
+      }
+    }
+  },
+  {
+    "page": 62,
+    "file": "aura-sun-62.jpg",
+    "url": "/products/real/aura-sun-62.jpg",
+    "bytes": 88499,
+    "colors": {
+      "lens": {
+        "hue": 0.027,
+        "sat": 0.568,
+        "light": 0.278,
+        "count": 1733
+      },
+      "frame": {
+        "hue": 0.05,
+        "sat": 0.37,
+        "light": 0.248,
+        "count": 511
+      }
+    }
+  },
+  {
+    "page": 63,
+    "file": "aura-sun-63.jpg",
+    "url": "/products/real/aura-sun-63.jpg",
+    "bytes": 67331,
+    "colors": {
+      "lens": {
+        "hue": 0.551,
+        "sat": 0.206,
+        "light": 0.091,
+        "count": 1260
+      },
+      "frame": {
+        "hue": 0.494,
+        "sat": 0.2,
+        "light": 0.096,
+        "count": 205
+      }
+    }
+  },
+  {
+    "page": 64,
+    "file": "aura-sun-64.jpg",
+    "url": "/products/real/aura-sun-64.jpg",
+    "bytes": 71549,
+    "colors": {
+      "lens": {
+        "hue": 0.66,
+        "sat": 0.297,
+        "light": 0.121,
+        "count": 1036
+      },
+      "frame": {
+        "hue": 0.46,
+        "sat": 0.107,
+        "light": 0.099,
+        "count": 149
+      }
+    }
+  },
+  {
+    "page": 65,
+    "file": "aura-sun-65.jpg",
+    "url": "/products/real/aura-sun-65.jpg",
+    "bytes": 80710,
+    "colors": {
+      "lens": {
+        "hue": 0.134,
+        "sat": 0.558,
+        "light": 0.331,
+        "count": 1269
+      },
+      "frame": {
+        "hue": 0.13,
+        "sat": 0.317,
+        "light": 0.266,
+        "count": 188
+      }
+    }
+  },
+  {
+    "page": 66,
+    "file": "aura-sun-66.jpg",
+    "url": "/products/real/aura-sun-66.jpg",
+    "bytes": 70210,
+    "colors": {
+      "lens": {
+        "hue": 0.508,
+        "sat": 0.195,
+        "light": 0.074,
+        "count": 724
+      },
+      "frame": {
+        "hue": 0.513,
+        "sat": 0.139,
+        "light": 0.095,
+        "count": 84
+      }
+    }
+  },
+  {
+    "page": 67,
+    "file": "aura-sun-67.jpg",
+    "url": "/products/real/aura-sun-67.jpg",
+    "bytes": 72958,
+    "colors": {
+      "lens": {
+        "hue": 0.662,
+        "sat": 0.317,
+        "light": 0.152,
+        "count": 924
+      },
+      "frame": {
+        "hue": 0.592,
+        "sat": 0.166,
+        "light": 0.137,
+        "count": 147
+      }
+    }
+  },
+  {
+    "page": 68,
+    "file": "aura-sun-68.jpg",
+    "url": "/products/real/aura-sun-68.jpg",
+    "bytes": 72389,
+    "colors": {
+      "lens": {
+        "hue": 0.569,
+        "sat": 0.225,
+        "light": 0.085,
+        "count": 1552
+      },
+      "frame": {
+        "hue": 0.482,
+        "sat": 0.099,
+        "light": 0.126,
+        "count": 122
+      }
+    }
+  },
+  {
+    "page": 69,
+    "file": "aura-sun-69.jpg",
+    "url": "/products/real/aura-sun-69.jpg",
+    "bytes": 73970,
+    "colors": {
+      "lens": {
+        "hue": 0.655,
+        "sat": 0.279,
+        "light": 0.145,
+        "count": 909
+      },
+      "frame": {
+        "hue": 0.381,
+        "sat": 0.073,
+        "light": 0.112,
+        "count": 31
+      }
+    }
+  },
+  {
+    "page": 70,
+    "file": "aura-sun-70.jpg",
+    "url": "/products/real/aura-sun-70.jpg",
+    "bytes": 76556,
+    "colors": {
+      "lens": {
+        "hue": 0.042,
+        "sat": 0.388,
+        "light": 0.234,
+        "count": 1960
+      },
+      "frame": {
+        "hue": 0.137,
+        "sat": 0.247,
+        "light": 0.135,
+        "count": 337
+      }
+    }
+  },
+  {
+    "page": 71,
+    "file": "aura-sun-71.jpg",
+    "url": "/products/real/aura-sun-71.jpg",
+    "bytes": 79527,
+    "colors": {
+      "lens": {
+        "hue": 0.123,
+        "sat": 0.332,
+        "light": 0.356,
+        "count": 1935
+      },
+      "frame": {
+        "hue": 0.16,
+        "sat": 0.23,
+        "light": 0.244,
+        "count": 516
+      }
+    }
+  },
+  {
+    "page": 72,
+    "file": "aura-sun-72.jpg",
+    "url": "/products/real/aura-sun-72.jpg",
+    "bytes": 78190,
+    "colors": {
+      "lens": {
+        "hue": 0.133,
+        "sat": 0.619,
+        "light": 0.352,
+        "count": 1385
+      },
+      "frame": {
+        "hue": 0.145,
+        "sat": 0.351,
+        "light": 0.265,
+        "count": 222
+      }
+    }
+  },
+  {
+    "page": 73,
+    "file": "aura-sun-73.jpg",
+    "url": "/products/real/aura-sun-73.jpg",
+    "bytes": 82941,
+    "colors": {
+      "lens": {
+        "hue": 0.133,
+        "sat": 0.664,
+        "light": 0.327,
+        "count": 1753
+      },
+      "frame": {
+        "hue": 0.449,
+        "sat": 0.089,
+        "light": 0.12,
+        "count": 105
+      }
+    }
+  },
+  {
+    "page": 74,
+    "file": "aura-sun-74.jpg",
+    "url": "/products/real/aura-sun-74.jpg",
+    "bytes": 75002,
+    "colors": {
+      "lens": {
+        "hue": 0.574,
+        "sat": 0.233,
+        "light": 0.085,
+        "count": 1486
+      },
+      "frame": {
+        "hue": 0.47,
+        "sat": 0.111,
+        "light": 0.112,
+        "count": 143
+      }
+    }
+  },
+  {
+    "page": 75,
+    "file": "aura-sun-75.jpg",
+    "url": "/products/real/aura-sun-75.jpg",
+    "bytes": 79916,
+    "colors": {
+      "lens": {
+        "hue": 0.622,
+        "sat": 0.246,
+        "light": 0.117,
+        "count": 1283
+      },
+      "frame": {
+        "hue": 0.45,
+        "sat": 0.119,
+        "light": 0.121,
+        "count": 102
+      }
+    }
+  },
+  {
+    "page": 76,
+    "file": "aura-sun-76.jpg",
+    "url": "/products/real/aura-sun-76.jpg",
+    "bytes": 75514,
+    "colors": {
+      "lens": {
+        "hue": 0.558,
+        "sat": 0.22,
+        "light": 0.091,
+        "count": 1412
+      },
+      "frame": {
+        "hue": 0.443,
+        "sat": 0.105,
+        "light": 0.114,
+        "count": 109
+      }
+    }
+  },
+  {
+    "page": 77,
+    "file": "aura-sun-77.jpg",
+    "url": "/products/real/aura-sun-77.jpg",
+    "bytes": 76366,
+    "colors": {
+      "lens": {
+        "hue": 0.652,
+        "sat": 0.289,
+        "light": 0.162,
+        "count": 1187
+      },
+      "frame": {
+        "hue": 0.402,
+        "sat": 0.087,
+        "light": 0.117,
+        "count": 77
+      }
+    }
+  },
+  {
+    "page": 78,
+    "file": "aura-sun-78.jpg",
+    "url": "/products/real/aura-sun-78.jpg",
+    "bytes": 76506,
+    "colors": {
+      "lens": {
+        "hue": 0.633,
+        "sat": 0.268,
+        "light": 0.113,
+        "count": 1238
+      },
+      "frame": {
+        "hue": 0.447,
+        "sat": 0.108,
+        "light": 0.106,
+        "count": 136
+      }
+    }
+  },
+  {
+    "page": 79,
+    "file": "aura-sun-79.jpg",
+    "url": "/products/real/aura-sun-79.jpg",
+    "bytes": 80255,
+    "colors": {
+      "lens": {
+        "hue": 0.107,
+        "sat": 0.386,
+        "light": 0.369,
+        "count": 2053
+      },
+      "frame": {
+        "hue": 0.467,
+        "sat": 0.101,
+        "light": 0.11,
+        "count": 95
+      }
+    }
+  },
+  {
+    "page": 80,
+    "file": "aura-sun-80.jpg",
+    "url": "/products/real/aura-sun-80.jpg",
+    "bytes": 79675,
+    "colors": {
+      "lens": {
+        "hue": 0.019,
+        "sat": 0.446,
+        "light": 0.177,
+        "count": 1299
+      },
+      "frame": {
+        "hue": 0.163,
+        "sat": 0.259,
+        "light": 0.133,
+        "count": 261
+      }
+    }
+  },
+  {
+    "page": 81,
+    "file": "aura-sun-81.jpg",
+    "url": "/products/real/aura-sun-81.jpg",
+    "bytes": 74917,
+    "colors": {
+      "lens": {
+        "hue": 0.547,
+        "sat": 0.244,
+        "light": 0.084,
+        "count": 1352
+      },
+      "frame": {
+        "hue": 0.519,
+        "sat": 0.231,
+        "light": 0.083,
+        "count": 400
+      }
+    }
+  },
+  {
+    "page": 82,
+    "file": "aura-sun-82.jpg",
+    "url": "/products/real/aura-sun-82.jpg",
+    "bytes": 86488,
+    "colors": {
+      "lens": {
+        "hue": 0.134,
+        "sat": 0.649,
+        "light": 0.309,
+        "count": 1852
+      },
+      "frame": {
+        "hue": 0.457,
+        "sat": 0.159,
+        "light": 0.116,
+        "count": 167
+      }
+    }
+  },
+  {
+    "page": 83,
+    "file": "aura-sun-83.jpg",
+    "url": "/products/real/aura-sun-83.jpg",
+    "bytes": 79477,
+    "colors": {
+      "lens": {
+        "hue": 0.671,
+        "sat": 0.331,
+        "light": 0.149,
+        "count": 1259
+      },
+      "frame": {
+        "hue": 0.616,
+        "sat": 0.211,
+        "light": 0.122,
+        "count": 214
+      }
+    }
+  }
+]
