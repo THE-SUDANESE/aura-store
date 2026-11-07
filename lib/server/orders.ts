@@ -1,5 +1,7 @@
 import { Prisma } from "@prisma/client";
-import { computeTotalsFromCents, toSarString, VAT_RATE } from "@/lib/checkout/pricing";
+import { computeTotalsFromCents, toSarString } from "@/lib/checkout/pricing";
+import { getSiteSettings } from "@/lib/server/settings";
+import { shippingRulesOf } from "@/lib/types/settings";
 import { prisma } from "@/lib/db";
 import { AppError } from "@/lib/http";
 
@@ -207,6 +209,8 @@ async function findByIdempotencyKey(key: string): Promise<CreatedOrder | null> {
 
 export async function createOrder(input: CreateOrderInput): Promise<CreatedOrder> {
   const { customer, items, idempotencyKey, userId } = input;
+  // قواعد الشحن والضريبة من إعدادات المتجر لا من ثوابت الكود
+  const rules = shippingRulesOf(await getSiteSettings());
 
   // إعادة المحاولة بنفس المفتاح تُعيد نفس الطلب بدل إنشاء طلب ثانٍ
   if (idempotencyKey) {
@@ -284,7 +288,7 @@ export async function createOrder(input: CreateOrderInput): Promise<CreatedOrder
       }
 
       const subtotalCents = lines.reduce((sum, line) => sum + line.lineTotalCents, 0);
-      const totals = computeTotalsFromCents(subtotalCents);
+      const totals = computeTotalsFromCents(subtotalCents, rules);
 
       // رقم تسلسلي من تسلسل PostgreSQL — فريد حتى مع الطلبات المتزامنة
       const [sequence] = await tx.$queryRaw<Array<{ value: bigint }>>`
@@ -308,7 +312,7 @@ export async function createOrder(input: CreateOrderInput): Promise<CreatedOrder
           taxTotal: toSarString(totals.vatCents),
           grandTotal: toSarString(totals.totalCents),
           currency: "SAR",
-          vatRate: new Prisma.Decimal(VAT_RATE.toFixed(4)),
+          vatRate: new Prisma.Decimal(rules.vatRate.toFixed(4)),
           shippingAddress: {
             fullName: customer.fullName,
             phone: customer.phone,

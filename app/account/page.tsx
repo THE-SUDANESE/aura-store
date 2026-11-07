@@ -29,6 +29,7 @@ export default async function AccountPage() {
       phone: true,
       role: true,
       createdAt: true,
+      _count: { select: { orders: true } },
       orders: {
         orderBy: { placedAt: "desc" },
         take: 10,
@@ -99,10 +100,10 @@ export default async function AccountPage() {
         <section className="rounded-3xl border border-ink-100 bg-white p-6 shadow-card">
           <div className="flex items-baseline justify-between gap-3">
             <h2 className="text-sm font-semibold text-ink-900">سجل الطلبات</h2>
-            <span className="text-xs text-ink-500">{formatNumber(user.orders.length)} طلب</span>
+            <span className="text-xs text-ink-500">{formatNumber(user._count.orders)} طلب</span>
           </div>
 
-          {user.orders.length === 0 ? (
+          {user._count.orders === 0 ? (
             <p className="mt-6 text-sm text-ink-500">لا توجد طلبات بعد. أول طلب لك سيظهر هنا.</p>
           ) : (
             <ul className="mt-4 divide-y divide-ink-100">

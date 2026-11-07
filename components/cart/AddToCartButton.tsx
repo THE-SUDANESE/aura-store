@@ -20,7 +20,11 @@ export function AddToCartButton({ product }: { product: ProductSummaryDto }) {
     return () => window.clearTimeout(timer);
   }, [justAdded]);
 
-  const variant = product.variants.find((entry) => entry.inStock) ?? null;
+  // نضيف أرخص متغير متوفر، حتى يطابق سعر السلة السعر المعروض على البطاقة
+  const variant =
+    product.variants
+      .filter((entry) => entry.inStock)
+      .sort((a, b) => Number(a.price.amount) - Number(b.price.amount))[0] ?? null;
   const isSoldOut = !variant;
 
   const handleClick = () => {

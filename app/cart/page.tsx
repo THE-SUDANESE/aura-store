@@ -17,10 +17,38 @@ export default function CartPage() {
   const items = useCartStore((state) => state.items);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const removeItem = useCartStore((state) => state.removeItem);
+  const syncPrices = useCartStore((state) => state.syncPrices);
 
   // السلة تُقرأ من localStorage: ننتظر الترطيب قبل عرض المحتوى
   const [isHydrated, setIsHydrated] = useState(false);
+  const [priceNotice, setPriceNotice] = useState(false);
   useEffect(() => setIsHydrated(true), []);
+
+  // إعادة تسعير السلة من الخادم: الأسعار والمخزون قد يتغيّران بعد الإضافة
+  const variantKey = items.map((item) => item.variantId).join(",");
+  useEffect(() => {
+    if (!isHydrated || items.length === 0) return;
+    let cancelled = false;
+
+    fetch("/api/cart/validate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        items: items.map((item) => ({ variantId: item.variantId, quantity: item.quantity })),
+      }),
+    })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload) => {
+        if (cancelled || !payload?.success) return;
+        if (syncPrices(payload.data.items)) setPriceNotice(true);
+      })
+      .catch(() => {});
+
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isHydrated, variantKey, syncPrices]);
 
   const subtotal = items.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
   const totals = computeTotals(subtotal);
@@ -57,6 +85,24 @@ export default function CartPage() {
         </div>
         <p className="text-xs text-ink-500">{formatNumber(itemCount)} قطعة</p>
       </header>
+
+      {priceNotice && (
+        <p
+          role="status"
+          className="mt-5 rounded-xl border border-accent-200 bg-accent-50 px-4 py-3 text-xs text-accent-800"
+        >
+          حدّثنا أسعار بعض القطع أو كمياتها لتطابق المخزون الحالي.
+        </p>
+      )}
+
+      {priceNotice && (
+        <p
+          role="status"
+          className="mt-5 rounded-xl border border-accent-200 bg-accent-50 px-4 py-3 text-xs text-accent-800"
+        >
+          حدّثنا أسعار بعض القطع أو كمياتها وفق المخزون الحالي.
+        </p>
+      )}
 
       <div className="mt-8 grid gap-10 lg:grid-cols-[1.3fr_0.7fr] lg:items-start">
         {/* القطع */}

@@ -27,12 +27,21 @@ export type CartItem = {
   quantity: number;
 };
 
+export type CartPriceUpdate = {
+  variantId: string;
+  unitPrice: number;
+  maxQuantity: number;
+  available: boolean;
+};
+
 type CartState = {
   items: CartItem[];
   addItem: (item: Omit<CartItem, "quantity">, quantity?: number) => void;
   updateQuantity: (variantId: string, quantity: number) => void;
   removeItem: (variantId: string) => void;
   clear: () => void;
+  /** يطبّق أسعار/مخزون الخادم. يعيد true إذا تغيّر شيء فعلاً. */
+  syncPrices: (updates: CartPriceUpdate[]) => boolean;
 };
 
 const clampQuantity = (quantity: number, maxQuantity: number): number => {
@@ -82,6 +91,47 @@ export const useCartStore = create<CartState>()(
         })),
 
       clear: () => set({ items: [] }),
+
+      syncPrices: (updates) => {
+        const { items } = useCartStore.getState();
+        const byId = new Map(updates.map((update) => [update.variantId, update]));
+        const next: CartItem[] = [];
+        let changed = false;
+
+        for (const item of items) {
+          const update = byId.get(item.variantId);
+          if (!update) {
+            next.push(item);
+            continue;
+          }
+
+          if (!update.available) {
+            changed = true;
+            continue;
+          }
+
+          const maxQuantity = Math.max(0, Math.trunc(update.maxQuantity));
+          const quantity = clampQuantity(item.quantity, maxQuantity);
+
+          if (quantity === 0) {
+            changed = true;
+            continue;
+          }
+
+          if (
+            quantity !== item.quantity ||
+            maxQuantity !== item.maxQuantity ||
+            update.unitPrice !== item.unitPrice
+          ) {
+            changed = true;
+          }
+
+          next.push({ ...item, unitPrice: update.unitPrice, maxQuantity, quantity });
+        }
+
+        if (changed) set({ items: next });
+        return changed;
+      },
     }),
     {
       name: STORAGE_KEY,

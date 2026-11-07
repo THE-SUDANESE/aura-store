@@ -1,15 +1,14 @@
 /**
  * زر واتساب عائم أسفل يسار الشاشة — للتواصل السريع من أي صفحة.
- * الرقم يُقرأ من NEXT_PUBLIC_WHATSAPP_PHONE (بصيغة دولية بلا +)
- * والقيمة الافتراضية للعرض فقط حتى يُضبط الرقم الحقيقي.
+ * الرقم يأتي من إعدادات الموقع (/admin/settings) مع بديل من متغير البيئة.
  */
 const DEFAULT_PHONE = "966500000000";
 
-const phone = (process.env.NEXT_PUBLIC_WHATSAPP_PHONE ?? DEFAULT_PHONE).replace(/\D/g, "");
-const message = encodeURIComponent("مرحباً AURA 👋 أرغب في الاستفسار عن منتجاتكم.");
-const whatsappHref = `https://wa.me/${phone}?text=${message}`;
+export function WhatsAppButton({ phone = DEFAULT_PHONE }: { phone?: string }) {
+  const digits = (phone || DEFAULT_PHONE).replace(/\D/g, "") || DEFAULT_PHONE;
+  const message = encodeURIComponent("مرحباً AURA 👋 أرغب في الاستفسار عن منتجاتكم.");
+  const whatsappHref = `https://wa.me/${digits}?text=${message}`;
 
-export function WhatsAppButton() {
   return (
     <a
       href={whatsappHref}

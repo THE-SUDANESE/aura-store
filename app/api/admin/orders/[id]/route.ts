@@ -4,8 +4,13 @@ import { isOrderStatus } from "@/lib/admin/order-status";
 import { requireAdmin } from "@/lib/auth/roles";
 import { AppError, ok, toErrorResponse } from "@/lib/http";
 import { updateOrderStatus } from "@/lib/server/admin";
+import { applyOrderAdjustments } from "@/lib/server/orders-admin";
 
-/** PATCH /api/admin/orders/:id  { status } — owner أو store_admin فقط */
+/**
+ * PATCH /api/admin/orders/:id
+ * { status } لتغيير الحالة، و/أو { adminNote, discountTotal } لتعديل الطلب.
+ * owner أو store_admin فقط.
+ */
 export const dynamic = "force-dynamic";
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -25,18 +30,37 @@ export async function PATCH(
       throw new AppError("INVALID_REQUEST", "معرّف الطلب غير صالح.", 400);
     }
 
-    const body = (await request.json().catch(() => null)) as { status?: unknown } | null;
-    const nextStatus = body?.status;
+    const body = (await request.json().catch(() => null)) as
+      | { status?: unknown; adminNote?: unknown; discountTotal?: unknown }
+      | null;
 
-    if (!isOrderStatus(nextStatus)) {
-      throw new AppError("VALIDATION_ERROR", "حالة الطلب غير صالحة.", 400, {
-        status: "اختر حالة صحيحة.",
+    const hasStatus = body?.status !== undefined;
+    const hasAdjustments = body?.adminNote !== undefined || body?.discountTotal !== undefined;
+
+    if (!hasStatus && !hasAdjustments) {
+      throw new AppError("INVALID_REQUEST", "لا يوجد تغيير مطلوب.", 400);
+    }
+
+    if (hasAdjustments) {
+      await applyOrderAdjustments({
+        orderId: id,
+        adminNote: body?.adminNote ?? null,
+        discountTotal: body?.discountTotal ?? null,
       });
     }
 
-    const order = await updateOrderStatus({ orderId: id, nextStatus });
+    if (hasStatus) {
+      if (!isOrderStatus(body?.status)) {
+        throw new AppError("VALIDATION_ERROR", "حالة الطلب غير صالحة.", 400, {
+          status: "اختر حالة صحيحة.",
+        });
+      }
 
-    return ok(order, requestId);
+      const order = await updateOrderStatus({ orderId: id, nextStatus: body.status });
+      return ok(order, requestId);
+    }
+
+    return ok({ id }, requestId);
   } catch (error) {
     return toErrorResponse(error, requestId);
   }

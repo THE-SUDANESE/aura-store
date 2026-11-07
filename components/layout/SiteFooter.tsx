@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { DEFAULT_SETTINGS, type SiteSettings } from "@/lib/types/settings";
 
 const SHOP_LINKS = [
   { href: "/shop?category=sunglasses", label: "النظارات الشمسية" },
@@ -11,7 +12,6 @@ const HELP_LINKS = [
   { href: "/pages/shipping-returns", label: "الشحن والاستبدال" },
   { href: "/pages/shipping-returns#returns", label: "سياسة الإرجاع (١٤ يوماً)" },
   { href: "/account", label: "طلباتي" },
-  { href: "https://wa.me/966500000000", label: "تواصل معنا" },
 ] as const;
 
 const LEGAL_LINKS = [
@@ -19,19 +19,21 @@ const LEGAL_LINKS = [
   { href: "/pages/terms", label: "الشروط والأحكام" },
 ] as const;
 
-export function SiteFooter() {
+export function SiteFooter({ settings = DEFAULT_SETTINGS }: { settings?: SiteSettings }) {
   const year = new Date().getFullYear();
+  const { contact, footer, shipping } = settings;
+  const whatsappHref = `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(
+    "مرحباً AURA 👋 أرغب في الاستفسار عن منتجاتكم.",
+  )}`;
 
   return (
     <footer className="mt-auto border-t border-ink-800 bg-ink-950 text-sand-100">
       <div className="shell grid gap-10 py-14 md:grid-cols-4">
         <div className="md:col-span-1">
           <p className="text-lg font-semibold tracking-brand text-white">AURA</p>
-          <p className="mt-4 max-w-xs text-sm leading-7 text-ink-300">
-            نظارات وأزياء بتصميم هادئ وتفاصيل جريئة. مختارة بعناية، ومصممة لتدوم.
-          </p>
+          <p className="mt-4 max-w-xs text-sm leading-7 text-ink-300">{footer.tagline}</p>
           <p className="mt-6 text-xs text-ink-400">
-            الأسعار تشمل ضريبة القيمة المضافة ١٥٪ — العملة: ر.س
+            الأسعار تشمل ضريبة القيمة المضافة {shipping.vatRatePercent}٪ — العملة: ر.س
           </p>
         </div>
 
@@ -53,22 +55,21 @@ export function SiteFooter() {
           <ul className="mt-4 space-y-3">
             {HELP_LINKS.map((link) => (
               <li key={link.href}>
-                {link.href.startsWith("/") ? (
-                  <Link href={link.href} className="text-sm text-sand-100 transition-colors hover:text-accent-300">
-                    {link.label}
-                  </Link>
-                ) : (
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-sand-100 transition-colors hover:text-accent-300"
-                  >
-                    {link.label}
-                  </a>
-                )}
+                <Link href={link.href} className="text-sm text-sand-100 transition-colors hover:text-accent-300">
+                  {link.label}
+                </Link>
               </li>
             ))}
+            <li>
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-sand-100 transition-colors hover:text-accent-300"
+              >
+                تواصل معنا
+              </a>
+            </li>
           </ul>
         </nav>
 
@@ -76,16 +77,16 @@ export function SiteFooter() {
           <h2 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-ink-400">تواصل</h2>
           <ul className="mt-4 space-y-3 text-sm text-sand-100">
             <li>
-              <a href="mailto:hello@aura.sa" className="transition-colors hover:text-accent-300">
-                hello@aura.sa
+              <a href={`mailto:${contact.email}`} className="transition-colors hover:text-accent-300">
+                {contact.email}
               </a>
             </li>
             <li dir="ltr" className="text-start">
-              <a href="tel:+966500000000" className="transition-colors hover:text-accent-300">
-                +966 50 000 0000
+              <a href={`tel:+${contact.whatsapp}`} className="transition-colors hover:text-accent-300">
+                {contact.phoneDisplay}
               </a>
             </li>
-            <li className="text-ink-400">الرياض، المملكة العربية السعودية</li>
+            <li className="text-ink-400">{contact.address}</li>
           </ul>
 
           <ul className="mt-6 flex gap-4">
@@ -104,7 +105,7 @@ export function SiteFooter() {
         {/* مساحة سفلية إضافية حتى لا يغطي زر واتساب العائم النص على الجوال */}
         <div className="shell flex flex-col items-center justify-between gap-3 pb-20 pt-6 text-xs text-ink-400 sm:flex-row sm:py-6">
           <p>© {year} AURA. جميع الحقوق محفوظة.</p>
-          <p>الدفع عند الاستلام متاح — بطاقات الدفع قريباً</p>
+          <p>{footer.paymentNote}</p>
         </div>
       </div>
     </footer>

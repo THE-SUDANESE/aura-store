@@ -4,19 +4,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { selectItemCount, useCartStore } from "@/lib/cart/store";
 import { formatNumber } from "@/lib/format";
+import { DEFAULT_SETTINGS, type NavLink } from "@/lib/types/settings";
 
 /**
- * كل هذه المسارات موجودة فعلياً في المشروع:
- *  - /shop, /shop?category=sunglasses, /shop?category=clothing
- *  - /cart, /account (محمي في middleware.ts ويحوّل الزائر إلى /auth/login)
+ * روابط التنقل تأتي من إعدادات الموقع، فإضافة قسم جديد لا تحتاج كوداً.
+ * المسارات الافتراضية موجودة فعلياً: /shop و/cart و/account و/pages/*
  */
-const NAV_LINKS = [
-  { href: "/shop?category=sunglasses", label: "نظارات شمسية" },
-  { href: "/shop?category=clothing", label: "أزياء" },
-  { href: "/shop", label: "كل المنتجات" },
-  { href: "/pages/about", label: "قصتنا" },
-] as const;
-
 function SearchIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} className="h-5 w-5" aria-hidden="true">
@@ -59,7 +52,7 @@ function MenuIcon({ open }: { open: boolean }) {
 const iconButtonClasses =
   "relative inline-flex h-10 w-10 items-center justify-center rounded-full text-ink-800 transition-colors hover:bg-ink-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500";
 
-export function SiteHeader() {
+export function SiteHeader({ nav = DEFAULT_SETTINGS.nav }: { nav?: NavLink[] }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   // السلة تُقرأ من localStorage، فنؤجل عرض العداد حتى يكتمل الترطيب (hydration)
   const [isMounted, setIsMounted] = useState(false);
@@ -85,8 +78,8 @@ export function SiteHeader() {
         {/* التنقل — سطح المكتب */}
         <nav aria-label="التنقل الرئيسي" className="hidden md:flex md:justify-center">
           <ul className="flex items-center gap-7">
-            {NAV_LINKS.map((link) => (
-              <li key={link.href}>
+            {nav.map((link) => (
+              <li key={`${link.href}-${link.label}`}>
                 <Link
                   href={link.href}
                   className="text-sm text-ink-700 underline-offset-8 transition-colors hover:text-ink-900 hover:underline"
@@ -140,8 +133,8 @@ export function SiteHeader() {
         <div id="mobile-menu" className="border-t border-ink-100 bg-sand-50 md:hidden">
           <nav aria-label="التنقل على الجوال" className="shell py-2">
             <ul className="flex flex-col">
-              {NAV_LINKS.map((link) => (
-                <li key={link.href}>
+              {nav.map((link) => (
+                <li key={`m-${link.href}-${link.label}`}>
                   <Link
                     href={link.href}
                     className="block border-b border-ink-100/70 py-3 text-sm text-ink-800"

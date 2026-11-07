@@ -152,9 +152,13 @@ export default async function AdminPage() {
                 orders.map((order) => (
                   <tr key={order.id} className="border-t border-ink-100 align-top">
                     <td className="px-4 py-4">
-                      <span dir="ltr" className="font-mono text-xs text-ink-700">
+                      <Link
+                        href={`/admin/orders/${order.id}`}
+                        dir="ltr"
+                        className="font-mono text-xs text-ink-700 underline underline-offset-4 hover:text-ink-900"
+                      >
                         {order.orderNumber}
-                      </span>
+                      </Link>
                     </td>
                     <td className="px-4 py-4">
                       <p className="text-xs font-medium text-ink-900">{order.customerName}</p>

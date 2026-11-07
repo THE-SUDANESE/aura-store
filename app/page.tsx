@@ -2,40 +2,44 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ProductCard } from "@/components/products/ProductCard";
 import { listProducts } from "@/lib/server/products";
+import { getSiteSettings } from "@/lib/server/settings";
 
 export const metadata: Metadata = {
   title: "AURA - متجر النظارات الشمسية والأزياء",
   description: "اكتشف مجموعة من النظارات الشمسية والأزياء ذات الجودة العالية",
 };
 
-// المنتجات تأتي من قاعدة البيانات: slugs حقيقية حتى لا تنتهي بطاقات المنتجات بصفحة 404
+// المنتجات والإعدادات متغيّرة: لا نُجمّد الصفحة
 export const dynamic = "force-dynamic";
 
 const BEST_SELLERS_COUNT = 6;
 
 export default async function HomePage() {
-  const { items } = await listProducts({ page: 1, pageSize: BEST_SELLERS_COUNT });
+  const [settings, { items }] = await Promise.all([
+    getSiteSettings(),
+    listProducts({ page: 1, pageSize: BEST_SELLERS_COUNT }),
+  ]);
+
+  const { hero } = settings;
 
   return (
     <div className="min-h-screen">
-      {/* Hero */}
+      {/* Hero — كل نصوصه من /admin/settings */}
       <section className="relative overflow-hidden bg-desert-50 py-20 lg:py-32">
         <div className="shell max-w-2xl text-center">
           <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.3em] text-accent-700">
-            أهلاً بك في متجر AURA
+            {hero.eyebrow}
           </p>
           <h1 className="mb-6 font-display text-4xl font-bold leading-tight text-ink-900 sm:text-5xl lg:text-6xl">
-            نظارات بتصميم لا يُنسى
+            {hero.title}
           </h1>
-          <p className="mx-auto mb-8 max-w-2xl text-base text-ink-600 lg:text-lg">
-            نختار لك أفضل النظارات الشمسية بألوان العدسة الأكثر أناقة، مع حماية ١٠٠٪ من الأشعة فوق البنفسجية.
-          </p>
+          <p className="mx-auto mb-8 max-w-2xl text-base text-ink-600 lg:text-lg">{hero.subtitle}</p>
           <div className="fade-in">
             <Link
-              href="/shop?category=sunglasses"
+              href={hero.ctaHref}
               className="hover-lift inline-block rounded-full bg-accent-600 px-8 py-3 text-lg font-medium text-white transition-colors hover:bg-accent-500"
             >
-              تسوّق العروض
+              {hero.ctaLabel}
             </Link>
           </div>
         </div>
@@ -68,7 +72,7 @@ export default async function HomePage() {
             <div className="rounded-3xl border border-dashed border-ink-200 px-6 py-16 text-center">
               <p className="text-sm text-ink-600">لا توجد منتجات منشورة حالياً.</p>
               <p className="mt-2 text-xs text-ink-400">
-                أضف منتجات بحالة «نشط» من لوحة التحكم أو نفّذ ملف البيانات التجريبية.
+                أضف منتجات بحالة «نشط» من لوحة التحكم.
               </p>
             </div>
           )}

@@ -2,8 +2,9 @@ import { randomUUID } from "node:crypto";
 import type { NextRequest } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/db";
-import { AppError, ok, toErrorResponse } from "@/lib/http";
+import { AppError, assertSameOrigin, ok, toErrorResponse } from "@/lib/http";
 import { createOrder, parseCheckoutPayload } from "@/lib/server/orders";
+import { clientIp, enforceRateLimit } from "@/lib/server/rate-limit";
 
 /**
  * POST /api/orders
@@ -16,6 +17,14 @@ export async function POST(request: NextRequest) {
   const requestId = randomUUID();
 
   try {
+    // فحص الأصل ثم حد المعدل: ١٠ طلبات كل ١٠ دقائق لكل عنوان
+    assertSameOrigin(request);
+    await enforceRateLimit({
+      key: `orders:${clientIp(request)}`,
+      limit: 10,
+      windowSeconds: 600,
+    });
+
     let payload: unknown;
     try {
       payload = await request.json();

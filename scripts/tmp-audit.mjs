@@ -1,0 +1,11 @@
+import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
+const p = new PrismaClient();
+const q = async (label, fn) => { try { console.log(label, JSON.stringify(await fn())); } catch (e) { console.log(label, "ERROR:", e.message.split("\n")[0]); } };
+await q("SEQ:", () => p.$queryRawUnsafe(`SELECT sequencename, last_value FROM pg_sequences WHERE sequencename='order_number_seq'`));
+await q("COUNTS:", () => p.$queryRawUnsafe(`SELECT (SELECT count(*)::int FROM products) products, (SELECT count(*)::int FROM products WHERE status='active' AND deleted_at IS NULL) active, (SELECT count(*)::int FROM product_variants) variants, (SELECT count(*)::int FROM categories) cats, (SELECT count(*)::int FROM users) users, (SELECT count(*)::int FROM orders) orders, (SELECT count(*)::int FROM product_images) images`));
+await q("ADMIN:", async () => { const u = await p.user.findFirst({ where: { role: "owner" }, select: { id: true, email: true, role: true, isActive: true, passwordHash: true, fullName: true } }); if (!u) return null; const ok = u.passwordHash ? await bcrypt.compare("Aura2026", u.passwordHash) : false; return { email: u.email, role: u.role, isActive: u.isActive, hasHash: Boolean(u.passwordHash), pwAura2026: ok }; });
+await q("IMAGES_TYPE:", () => p.$queryRawUnsafe(`SELECT data_type FROM information_schema.columns WHERE table_name='products' AND column_name='specs'`));
+await q("SLUGS:", async () => (await p.product.findMany({ select: { slug: true, status: true }, take: 40 })).map(x => `${x.slug}:${x.status}`));
+await q("VARIANT_SAMPLE:", () => p.productVariant.findMany({ select: { sku: true, stockQuantity: true, price: true }, where: { isActive: true }, take: 8 }));
+await p.$disconnect();

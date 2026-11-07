@@ -5,9 +5,16 @@ import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
+import { SettingsProvider } from "@/components/providers/SettingsProvider";
+import { getSiteSettings } from "@/lib/server/settings";
 import "./globals.css";
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: "AURA — نظارات شمسية وأزياء",
     template: "%s | AURA",
@@ -20,6 +27,7 @@ export const metadata: Metadata = {
     description: "نظارات وأزياء بتصميم هادئ وتفاصيل جريئة.",
     locale: "ar_SA",
     type: "website",
+    siteName: "AURA",
   },
 };
 
@@ -29,7 +37,9 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
+  const settings = await getSiteSettings();
+
   return (
     <html lang="ar" dir="rtl">
       <body className="flex min-h-dvh flex-col font-sans">
@@ -41,16 +51,21 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           تخطَّ إلى المحتوى
         </a>
 
-        <AnnouncementBar />
-        <SiteHeader />
+        <SettingsProvider value={settings}>
+          <AnnouncementBar
+            text={settings.announcement.text}
+            enabled={settings.announcement.enabled}
+          />
+          <SiteHeader nav={settings.nav} />
 
-        <main id="main" className="flex-1">
-          {children}
-        </main>
+          <main id="main" className="flex-1">
+            {children}
+          </main>
 
-        <SiteFooter />
-        <WhatsAppButton />
-        <AnalyticsProvider />
+          <SiteFooter settings={settings} />
+          <WhatsAppButton phone={settings.contact.whatsapp} />
+          <AnalyticsProvider />
+        </SettingsProvider>
       </body>
     </html>
   );

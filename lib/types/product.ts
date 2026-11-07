@@ -41,6 +41,13 @@ export type ProductCategoryDto = {
   name: { ar: string; en: string | null };
 };
 
+export type ProductBadgeDto = {
+  slug: string;
+  label: string;
+  style: "solid" | "outline" | "soft";
+  colorHex: string | null;
+};
+
 export type ProductPriceDto = {
   amount: string;
   compareAt: string | null;
@@ -55,6 +62,7 @@ export type ProductSummaryDto = {
   name: { ar: string; en: string | null };
   type: ProductType;
   category: ProductCategoryDto;
+  badges: ProductBadgeDto[];
   shortDescription: string | null;
   price: ProductPriceDto;
   returnWindowDays: number;

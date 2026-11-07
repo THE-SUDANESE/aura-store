@@ -35,6 +35,13 @@ const productInclude = {
     },
     orderBy: [{ isPrimary: "desc" }, { sortOrder: "asc" }],
   },
+  badges: {
+    where: { badge: { isActive: true } },
+    orderBy: { sortOrder: "asc" },
+    select: {
+      badge: { select: { slug: true, labelAr: true, style: true, colorHex: true } },
+    },
+  },
   variants: {
     where: { isActive: true },
     orderBy: [{ stockQuantity: "desc" }, { variantKey: "asc" }],
@@ -97,7 +104,12 @@ function mapVariant(
 export function toProductSummary(row: ProductRow): ProductSummaryDto {
   const variants = row.variants.map((variant) => mapVariant(variant, row.basePrice));
   const prices = variants.map((variant) => Number(variant.price.amount));
-  const minPrice = prices.length > 0 ? Math.min(...prices) : Number(row.basePrice.toFixed(2));
+  // السعر المعروض = أرخص متغير *متوفر*؛ وإن نفد الكل فالأرخص كأقل تقدير
+  const inStockPrices = variants
+    .filter((variant) => variant.inStock)
+    .map((variant) => Number(variant.price.amount));
+  const pricePool = inStockPrices.length > 0 ? inStockPrices : prices;
+  const minPrice = pricePool.length > 0 ? Math.min(...pricePool) : Number(row.basePrice.toFixed(2));
 
   return {
     id: row.id,
@@ -109,6 +121,12 @@ export function toProductSummary(row: ProductRow): ProductSummaryDto {
       slug: row.category.slug,
       name: { ar: row.category.nameAr, en: row.category.nameEn },
     },
+    badges: row.badges.map((entry) => ({
+      slug: entry.badge.slug,
+      label: entry.badge.labelAr,
+      style: entry.badge.style,
+      colorHex: entry.badge.colorHex,
+    })),
     shortDescription: row.shortDescription,
     price: {
       amount: minPrice.toFixed(2),

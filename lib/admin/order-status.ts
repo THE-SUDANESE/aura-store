@@ -24,7 +24,8 @@ export const ORDER_STATUS_TRANSITIONS: Record<OrderStatus, readonly OrderStatus[
 };
 
 export function isOrderStatus(value: unknown): value is OrderStatus {
-  return typeof value === "string" && value in ORDER_STATUS_LABELS;
+  // Object.hasOwn وليس `in`: الأخير يقبل مفاتيح prototype مثل "toString"
+  return typeof value === "string" && Object.hasOwn(ORDER_STATUS_LABELS, value);
 }
 
 export function canTransition(from: OrderStatus, to: OrderStatus): boolean {

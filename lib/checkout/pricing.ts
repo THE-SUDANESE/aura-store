@@ -1,16 +1,30 @@
 /**
  * حساب التسعير المشترك بين صفحة الدفع والخادم.
- * الأسعار شاملة ضريبة القيمة المضافة، والشحن مبلغ ثابت.
+ * الأسعار شاملة ضريبة القيمة المضافة، والشحن مبلغ قابل للضبط من الإعدادات.
  *
  * تحذير: نتائج هذه الدالة على العميل للعرض فقط.
- * الخادم يعيد حساب كل شيء من أسعار قاعدة البيانات قبل إنشاء الطلب.
+ * الخادم يعيد حساب كل شيء من أسعار قاعدة البيانات وإعدادات المتجر قبل إنشاء الطلب.
  */
 
+export type PricingRules = {
+  /** نسبة الضريبة ككسر (0.15 = ١٥٪) */
+  vatRate: number;
+  /** رسوم الشحن الثابتة بالريال */
+  flatShippingSar: number;
+  /** الحد الذي يصبح فوقه الشحن مجانياً */
+  freeShippingThresholdSar: number;
+};
+
+/** قيم افتراضية تُستخدم إن تعذّر قراءة الإعدادات (لا تتغيّر من هنا). */
 export const VAT_RATE = 0.15;
-/** رسوم الشحن الثابتة للطلبات الأقل من حد الشحن المجاني. */
 export const SHIPPING_FLAT_SAR = 25;
-/** فوق هذا المبلغ يكون الشحن مجانياً. */
 export const FREE_SHIPPING_THRESHOLD_SAR = 300;
+
+export const DEFAULT_PRICING: PricingRules = {
+  vatRate: VAT_RATE,
+  flatShippingSar: SHIPPING_FLAT_SAR,
+  freeShippingThresholdSar: FREE_SHIPPING_THRESHOLD_SAR,
+};
 
 export type OrderTotals = {
   subtotalCents: number;
@@ -30,19 +44,28 @@ const toSar = (cents: number): number => Math.round(cents) / 100;
 
 export const toSarString = (cents: number): string => (Math.round(cents) / 100).toFixed(2);
 
-export function computeTotals(subtotalSar: number): OrderTotals {
-  return computeTotalsFromCents(Math.round(Math.max(subtotalSar, 0) * 100));
+export function computeTotals(
+  subtotalSar: number,
+  rules: PricingRules = DEFAULT_PRICING,
+): OrderTotals {
+  return computeTotalsFromCents(Math.round(Math.max(subtotalSar, 0) * 100), rules);
 }
 
-export function computeTotalsFromCents(subtotalCentsInput: number): OrderTotals {
+export function computeTotalsFromCents(
+  subtotalCentsInput: number,
+  rules: PricingRules = DEFAULT_PRICING,
+): OrderTotals {
   const subtotalCents = Math.max(Math.round(subtotalCentsInput), 0);
-  const thresholdCents = FREE_SHIPPING_THRESHOLD_SAR * 100;
+  const thresholdCents = Math.max(Math.round(rules.freeShippingThresholdSar), 0) * 100;
 
-  // لا شحن على سلة فارغة، ومجاني عند بلوغ الحد
+  // لا شحن على سلة فارغة، ومجاني عند بلوغ الحد (أو إذا كان الحد صفراً)
   const shippingCents =
-    subtotalCents === 0 || subtotalCents >= thresholdCents ? 0 : SHIPPING_FLAT_SAR * 100;
+    subtotalCents === 0 || subtotalCents >= thresholdCents
+      ? 0
+      : Math.max(Math.round(rules.flatShippingSar), 0) * 100;
+
   const totalCents = subtotalCents + shippingCents;
-  const vatCents = Math.round(totalCents - totalCents / (1 + VAT_RATE));
+  const vatCents = Math.round(totalCents - totalCents / (1 + rules.vatRate));
 
   return {
     subtotalCents,

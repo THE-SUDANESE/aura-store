@@ -10,6 +10,7 @@ export type ApiErrorCode =
   | "INVALID_TRANSITION"
   | "UNAUTHORIZED"
   | "FORBIDDEN"
+  | "RATE_LIMITED"
   | "INTERNAL_ERROR";
 
 /** خطأ متوقّع يُترجم إلى رد JSON واضح بدل تسريب تفاصيل داخلية. */
@@ -30,6 +31,34 @@ export class AppError extends Error {
     this.code = code;
     this.status = status;
     this.fields = fields;
+  }
+}
+
+/**
+ * فحص أصل الطلب للعمليات المغيّرة (POST/PATCH/DELETE).
+ *
+ * متصفحات اليوم ترسل Origin دائماً في طلبات fetch غير البسيطة؛ اختلافه عن
+ * مضيف الموقع يعني طلباً من موقع آخر. الطلبات بلا Origin (سكربتات الخادم)
+ * تُترك لأن ملفات تعريف الارتباط SameSite تحميها أصلاً.
+ */
+export function assertSameOrigin(request: Request): void {
+  const origin = request.headers.get("origin");
+  if (!origin || origin === "null") return;
+
+  const host = (request.headers.get("x-forwarded-host") ?? request.headers.get("host") ?? "")
+    .split(",")[0]
+    ?.trim();
+  if (!host) return;
+
+  let originHost: string;
+  try {
+    originHost = new URL(origin).host;
+  } catch {
+    throw new AppError("FORBIDDEN", "أصل الطلب غير صالح.", 403);
+  }
+
+  if (originHost !== host) {
+    throw new AppError("FORBIDDEN", "طلب من أصل غير مسموح.", 403);
   }
 }
 

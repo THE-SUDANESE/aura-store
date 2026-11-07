@@ -33,6 +33,13 @@ function readCustomerName(address: unknown): string | null {
   return typeof record.fullName === "string" ? record.fullName : null;
 }
 
+/** هاتف الشحن موجود داخل shippingAddress لكل من الزائر والعميل المسجّل. */
+function readCustomerPhone(address: unknown): string | null {
+  if (typeof address !== "object" || address === null) return null;
+  const record = address as Record<string, unknown>;
+  return typeof record.phone === "string" ? record.phone : null;
+}
+
 export async function listRecentOrders(limit = 20): Promise<AdminOrderRow[]> {
   const orders = await prisma.order.findMany({
     orderBy: { placedAt: "desc" },
@@ -47,7 +54,8 @@ export async function listRecentOrders(limit = 20): Promise<AdminOrderRow[]> {
     id: order.id,
     orderNumber: order.orderNumber,
     customerName: order.user?.fullName ?? readCustomerName(order.shippingAddress) ?? "زائر",
-    customerContact: order.guestPhone ?? "",
+    // guestPhone يُملأ للزوار فقط؛ للعميل المسجّل نقرأ الهاتف من عنوان الشحن
+    customerContact: order.guestPhone ?? readCustomerPhone(order.shippingAddress) ?? "",
     total: order.grandTotal.toFixed(2),
     currency: order.currency,
     status: order.status,
@@ -79,6 +87,14 @@ export async function listInventory(limit = 60): Promise<AdminInventoryRow[]> {
   }));
 }
 
+/**
+ * تغيير حالة الطلب.
+ *
+ * قاعدة المحاسبة: المخزون يُخصم عند إنشاء الطلب، لذلك يجب أن يعود عند
+ * الإلغاء أو الإرجاع — وإلا بقيت الكميات محتجزة للأبد واختلف المخزون
+ * الفعلي عن المسجّل. الإرجاع/الإلغاء لا يتكرران لأن الحالتين نهائيتان
+ * في جدول الانتقالات (ORDER_STATUS_TRANSITIONS).
+ */
 export async function updateOrderStatus(input: {
   orderId: string;
   nextStatus: OrderStatus;
@@ -127,13 +143,46 @@ export async function updateOrderStatus(input: {
       break;
   }
 
-  const updated = await prisma.order.update({
-    where: { id: order.id },
-    data: { status: input.nextStatus, ...timestamps },
-    select: { orderNumber: true, status: true },
-  });
+  const restocks = input.nextStatus === "cancelled" || input.nextStatus === "returned";
 
-  return updated;
+  return prisma.$transaction(async (tx) => {
+    const updated = await tx.order.update({
+      where: { id: order.id },
+      data: { status: input.nextStatus, ...timestamps },
+      select: { orderNumber: true, status: true },
+    });
+
+    if (restocks) {
+      const items = await tx.orderItem.findMany({
+        where: { orderId: order.id, variantId: { not: null } },
+        select: { variantId: true, quantity: true },
+      });
+
+      for (const item of items) {
+        if (!item.variantId) continue;
+
+        await tx.productVariant.update({
+          where: { id: item.variantId },
+          data: { stockQuantity: { increment: item.quantity } },
+        });
+
+        await tx.inventoryMovement.create({
+          data: {
+            variantId: item.variantId,
+            delta: item.quantity,
+            reason: input.nextStatus === "returned" ? "return" : "cancel",
+            orderId: order.id,
+            note:
+              input.nextStatus === "returned"
+                ? "إرجاع كامل من لوحة التحكم"
+                : "إلغاء الطلب من لوحة التحكم",
+          },
+        });
+      }
+    }
+
+    return updated;
+  });
 }
 
 /**
