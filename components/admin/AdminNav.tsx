@@ -10,6 +10,7 @@ const LINKS = [
   { href: "/admin/pages", label: "الصفحات" },
   { href: "/admin/settings", label: "الإعدادات" },
   { href: "/admin/users", label: "المستخدمون" },
+  { href: "/admin/account", label: "الحساب" },
 ] as const;
 
 /** شريط تنقل موحّد لكل صفحات لوحة التحكم. */
