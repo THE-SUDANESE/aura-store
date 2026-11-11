@@ -40,7 +40,9 @@ export function SettingsForm({ initial }: { initial: SiteSettings }) {
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState<{ type: "ok" | "error"; text: string } | null>(null);
 
-  function patch<K extends "announcement" | "hero" | "contact" | "shipping" | "footer">(
+  function patch<
+    K extends "announcement" | "hero" | "contact" | "shipping" | "footer" | "social",
+  >(
     section: K,
     value: Partial<SiteSettings[K]>,
   ) {
@@ -269,6 +271,83 @@ export function SettingsForm({ initial }: { initial: SiteSettings }) {
               onChange={(event) =>
                 patch("shipping", { vatRatePercent: Number(event.target.value) })
               }
+            />
+          </Field>
+        </div>
+      </section>
+
+      {/* حسابات التواصل الاجتماعي */}
+      <section className="rounded-3xl border border-ink-100 bg-white p-6 shadow-card">
+        <h2 className="text-sm font-semibold text-ink-900">حسابات التواصل الاجتماعي</h2>
+        <p className="mt-1 text-[11px] text-ink-400">
+          اترك الحقل فارغاً لإخفاء الحساب من الفوتر. استخدم الرابط الكامل الذي يبدأ بـ https://
+        </p>
+
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <Field id="social-instagram" label="إنستغرام">
+            <input
+              id="social-instagram"
+              dir="ltr"
+              className={inputClasses}
+              maxLength={300}
+              placeholder="https://instagram.com/aura"
+              value={form.social.instagram}
+              onChange={(event) => patch("social", { instagram: event.target.value })}
+            />
+          </Field>
+          <Field id="social-tiktok" label="تيك توك">
+            <input
+              id="social-tiktok"
+              dir="ltr"
+              className={inputClasses}
+              maxLength={300}
+              placeholder="https://tiktok.com/@aura"
+              value={form.social.tiktok}
+              onChange={(event) => patch("social", { tiktok: event.target.value })}
+            />
+          </Field>
+          <Field id="social-snapchat" label="سناب شات">
+            <input
+              id="social-snapchat"
+              dir="ltr"
+              className={inputClasses}
+              maxLength={300}
+              placeholder="https://snapchat.com/add/aura"
+              value={form.social.snapchat}
+              onChange={(event) => patch("social", { snapchat: event.target.value })}
+            />
+          </Field>
+          <Field id="social-x" label="منصة X (تويتر)">
+            <input
+              id="social-x"
+              dir="ltr"
+              className={inputClasses}
+              maxLength={300}
+              placeholder="https://x.com/aura"
+              value={form.social.x}
+              onChange={(event) => patch("social", { x: event.target.value })}
+            />
+          </Field>
+          <Field id="social-facebook" label="فيسبوك">
+            <input
+              id="social-facebook"
+              dir="ltr"
+              className={inputClasses}
+              maxLength={300}
+              placeholder="https://facebook.com/aura"
+              value={form.social.facebook}
+              onChange={(event) => patch("social", { facebook: event.target.value })}
+            />
+          </Field>
+          <Field id="social-youtube" label="يوتيوب">
+            <input
+              id="social-youtube"
+              dir="ltr"
+              className={inputClasses}
+              maxLength={300}
+              placeholder="https://youtube.com/@aura"
+              value={form.social.youtube}
+              onChange={(event) => patch("social", { youtube: event.target.value })}
             />
           </Field>
         </div>

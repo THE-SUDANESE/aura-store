@@ -40,6 +40,15 @@ export type SiteSettings = {
     tagline: string;
     paymentNote: string;
   };
+  /** روابط حسابات المتجر — أي رابط فارغ لا يظهر في الفوتر. */
+  social: {
+    instagram: string;
+    tiktok: string;
+    snapchat: string;
+    x: string;
+    facebook: string;
+    youtube: string;
+  };
   nav: NavLink[];
 };
 
@@ -70,6 +79,14 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   footer: {
     tagline: "نظارات وأزياء بتصميم هادئ وتفاصيل جريئة. مختارة بعناية، ومصممة لتدوم.",
     paymentNote: "الدفع عند الاستلام متاح — بطاقات الدفع قريباً",
+  },
+  social: {
+    instagram: "",
+    tiktok: "",
+    snapchat: "",
+    x: "",
+    facebook: "",
+    youtube: "",
   },
   nav: [
     { label: "نظارات شمسية", href: "/shop?category=sunglasses" },
@@ -113,6 +130,15 @@ export function sanitizeHref(value: unknown, fallback = "/"): string {
   return fallback;
 }
 
+/** رابط حساب اجتماعي: https فقط، وغير الصالح يُحذف بدل كسر الفوتر. */
+function socialUrl(value: unknown): string {
+  if (typeof value !== "string") return "";
+  const trimmed = value.trim();
+  if (trimmed.length === 0) return "";
+  if (!/^https?:\/\//i.test(trimmed)) return "";
+  return trimmed.slice(0, 300);
+}
+
 function normalizeNav(value: unknown): NavLink[] {
   if (!Array.isArray(value)) return DEFAULT_SETTINGS.nav;
 
@@ -137,6 +163,7 @@ export function normalizeSettings(input: unknown): SiteSettings {
   const contact = record(root.contact);
   const shipping = record(root.shipping);
   const footer = record(root.footer);
+  const social = record(root.social);
 
   return {
     announcement: {
@@ -174,6 +201,14 @@ export function normalizeSettings(input: unknown): SiteSettings {
     footer: {
       tagline: text(footer.tagline, DEFAULT_SETTINGS.footer.tagline, 300),
       paymentNote: text(footer.paymentNote, DEFAULT_SETTINGS.footer.paymentNote, 200),
+    },
+    social: {
+      instagram: socialUrl(social.instagram),
+      tiktok: socialUrl(social.tiktok),
+      snapchat: socialUrl(social.snapchat),
+      x: socialUrl(social.x),
+      facebook: socialUrl(social.facebook),
+      youtube: socialUrl(social.youtube),
     },
     nav: normalizeNav(root.nav),
   };

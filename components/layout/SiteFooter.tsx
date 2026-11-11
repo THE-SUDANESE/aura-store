@@ -19,12 +19,22 @@ const LEGAL_LINKS = [
   { href: "/pages/terms", label: "الشروط والأحكام" },
 ] as const;
 
+const SOCIAL_LABELS: Array<{ key: keyof SiteSettings["social"]; label: string }> = [
+  { key: "instagram", label: "إنستغرام" },
+  { key: "tiktok", label: "تيك توك" },
+  { key: "snapchat", label: "سناب شات" },
+  { key: "x", label: "X" },
+  { key: "facebook", label: "فيسبوك" },
+  { key: "youtube", label: "يوتيوب" },
+];
+
 export function SiteFooter({ settings = DEFAULT_SETTINGS }: { settings?: SiteSettings }) {
   const year = new Date().getFullYear();
   const { contact, footer, shipping } = settings;
   const whatsappHref = `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(
     "مرحباً AURA 👋 أرغب في الاستفسار عن منتجاتكم.",
   )}`;
+  const socialLinks = SOCIAL_LABELS.filter(({ key }) => settings.social[key].length > 0);
 
   return (
     <footer className="mt-auto border-t border-ink-800 bg-ink-950 text-sand-100">
@@ -88,6 +98,23 @@ export function SiteFooter({ settings = DEFAULT_SETTINGS }: { settings?: SiteSet
             </li>
             <li className="text-ink-400">{contact.address}</li>
           </ul>
+
+          {socialLinks.length > 0 && (
+            <ul aria-label="حسابات التواصل الاجتماعي" className="mt-5 flex flex-wrap gap-2">
+              {socialLinks.map(({ key, label }) => (
+                <li key={key}>
+                  <a
+                    href={settings.social[key]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block rounded-full border border-ink-700 px-3 py-1 text-[11px] text-ink-300 transition-colors hover:border-accent-300 hover:text-accent-300"
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
 
           <ul className="mt-6 flex gap-4">
             {LEGAL_LINKS.map((link) => (

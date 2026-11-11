@@ -55,6 +55,16 @@ export function ProductForm({ initial, categories, badges }: Props) {
       images: current.images.map((image, i) => (i === index ? { ...image, ...patch } : image)),
     }));
 
+  /** ترتيب الصور يحدد ترتيب العرض في صفحة المنتج — نعيد ترقيم sortOrder دائماً. */
+  const moveImage = (from: number, to: number) =>
+    setForm((current) => {
+      if (to < 0 || to >= current.images.length) return current;
+      const images = [...current.images];
+      const [moved] = images.splice(from, 1);
+      images.splice(to, 0, moved);
+      return { ...current, images: images.map((image, i) => ({ ...image, sortOrder: i })) };
+    });
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (isSaving) return;
@@ -613,6 +623,26 @@ export function ProductForm({ initial, categories, badges }: Props) {
                 />
                 رئيسية
               </label>
+              <div className="flex shrink-0 gap-1">
+                <button
+                  type="button"
+                  aria-label="تقديم الصورة"
+                  disabled={index === 0}
+                  className="h-10 w-9 rounded-lg border border-ink-200 text-xs text-ink-600 disabled:opacity-40"
+                  onClick={() => moveImage(index, index - 1)}
+                >
+                  ↑
+                </button>
+                <button
+                  type="button"
+                  aria-label="تأخير الصورة"
+                  disabled={index === form.images.length - 1}
+                  className="h-10 w-9 rounded-lg border border-ink-200 text-xs text-ink-600 disabled:opacity-40"
+                  onClick={() => moveImage(index, index + 1)}
+                >
+                  ↓
+                </button>
+              </div>
               <button
                 type="button"
                 className="h-10 shrink-0 rounded-lg border border-ink-200 px-3 text-xs text-warning-700"
