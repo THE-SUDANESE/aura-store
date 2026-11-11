@@ -6,6 +6,7 @@ const LINKS = [
   { href: "/admin/categories", label: "التصنيفات" },
   { href: "/admin/badges", label: "الشارات" },
   { href: "/admin/reviews", label: "التقييمات" },
+  { href: "/admin/coupons", label: "الكوبونات" },
   { href: "/admin/pages", label: "الصفحات" },
   { href: "/admin/settings", label: "الإعدادات" },
   { href: "/admin/users", label: "المستخدمون" },

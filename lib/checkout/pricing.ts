@@ -28,6 +28,8 @@ export const DEFAULT_PRICING: PricingRules = {
 
 export type OrderTotals = {
   subtotalCents: number;
+  /** مبلغ الخصم المطبّق (كوبون أو تعديل إداري) — لا يتجاوز المجموع الفرعي. */
+  discountCents: number;
   shippingCents: number;
   totalCents: number;
   /** الجزء الضريبي المستخرج من الإجمالي (وليس مضافاً فوقه). */
@@ -35,6 +37,7 @@ export type OrderTotals = {
   /** المبلغ المتبقي للوصول إلى الشحن المجاني (صفر إذا تحقق). */
   freeShippingRemainingCents: number;
   subtotal: number;
+  discount: number;
   shipping: number;
   total: number;
   vat: number;
@@ -47,33 +50,48 @@ export const toSarString = (cents: number): string => (Math.round(cents) / 100).
 export function computeTotals(
   subtotalSar: number,
   rules: PricingRules = DEFAULT_PRICING,
+  discountSar = 0,
 ): OrderTotals {
-  return computeTotalsFromCents(Math.round(Math.max(subtotalSar, 0) * 100), rules);
+  return computeTotalsFromCents(
+    Math.round(Math.max(subtotalSar, 0) * 100),
+    rules,
+    Math.round(Math.max(discountSar, 0) * 100),
+  );
 }
 
+/**
+ * الحساب الرسمي: يُطبَّق الخصم على قيمة البضاعة أولاً، ثم يُحسب الشحن على
+ * الصافي (فالكوبون قد يُسقط الطلب تحت حد الشحن المجاني)، والضريبة تُستخرج
+ * من الإجمالي النهائي لأن الأسعار شاملة لها.
+ */
 export function computeTotalsFromCents(
   subtotalCentsInput: number,
   rules: PricingRules = DEFAULT_PRICING,
+  discountCentsInput = 0,
 ): OrderTotals {
   const subtotalCents = Math.max(Math.round(subtotalCentsInput), 0);
+  const discountCents = Math.min(Math.max(Math.round(discountCentsInput), 0), subtotalCents);
+  const netCents = subtotalCents - discountCents;
   const thresholdCents = Math.max(Math.round(rules.freeShippingThresholdSar), 0) * 100;
 
   // لا شحن على سلة فارغة، ومجاني عند بلوغ الحد (أو إذا كان الحد صفراً)
   const shippingCents =
-    subtotalCents === 0 || subtotalCents >= thresholdCents
+    netCents === 0 || netCents >= thresholdCents
       ? 0
       : Math.max(Math.round(rules.flatShippingSar), 0) * 100;
 
-  const totalCents = subtotalCents + shippingCents;
+  const totalCents = netCents + shippingCents;
   const vatCents = Math.round(totalCents - totalCents / (1 + rules.vatRate));
 
   return {
     subtotalCents,
+    discountCents,
     shippingCents,
     totalCents,
     vatCents,
-    freeShippingRemainingCents: Math.max(thresholdCents - subtotalCents, 0),
+    freeShippingRemainingCents: Math.max(thresholdCents - netCents, 0),
     subtotal: toSar(subtotalCents),
+    discount: toSar(discountCents),
     shipping: toSar(shippingCents),
     total: toSar(totalCents),
     vat: toSar(vatCents),

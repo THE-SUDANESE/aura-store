@@ -59,6 +59,7 @@ model User {
   orders             Order[]
   inventoryMovements InventoryMovement[]
   reviews            Review[]
+  wishlist           WishlistItem[]
 
   @@index([role])
   @@map("users")
@@ -114,6 +115,7 @@ model Product {
   orderItems OrderItem[]
   reviews    Review[]
   badges     ProductBadge[]
+  wishlist   WishlistItem[]
 
   @@index([categoryId, status])
   @@index([isFeatured])
@@ -245,6 +247,49 @@ model Order {
 
   @@index([userId, placedAt])
   @@map("orders")
+}
+
+// ---------- كوبونات الخصم ----------
+
+enum CouponType {
+  percent
+  fixed
+
+  @@map("coupon_type")
+}
+
+model WishlistItem {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  productId String   @map("product_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@index([productId])
+  @@map("wishlist_items")
+}
+
+model Coupon {
+  id          String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code        String     @unique
+  description String?
+  type        CouponType
+  // percent: نسبة مئوية (10 = ١٠٪) — fixed: مبلغ ثابت بالريال
+  value       Decimal    @db.Decimal(10, 2)
+  minSubtotal Decimal    @default(0) @map("min_subtotal") @db.Decimal(10, 2)
+  maxUses     Int?       @map("max_uses")
+  usedCount   Int        @default(0) @map("used_count")
+  startsAt    DateTime?  @map("starts_at") @db.Timestamptz(6)
+  expiresAt   DateTime?  @map("expires_at") @db.Timestamptz(6)
+  isActive    Boolean    @default(true) @map("is_active")
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime   @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@index([isActive, expiresAt])
+  @@map("coupons")
 }
 
 model OrderItem {

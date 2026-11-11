@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { computeTotalsFromCents, toSarString } from "@/lib/checkout/pricing";
+import { redeemCoupon, resolveCoupon } from "@/lib/server/coupons";
 import { getSiteSettings } from "@/lib/server/settings";
 import { shippingRulesOf } from "@/lib/types/settings";
 import { prisma } from "@/lib/db";
@@ -43,12 +44,14 @@ export type CreateOrderInput = {
   items: CheckoutItem[];
   idempotencyKey: string | null;
   userId: string | null;
+  discountCode?: string | null;
 };
 
 export type CreatedOrder = {
   orderNumber: string;
   status: string;
   grandTotal: string;
+  discountTotal: string;
   currency: string;
   placedAt: string;
 };
@@ -70,6 +73,7 @@ export function parseCheckoutPayload(payload: unknown): {
   customer: CheckoutCustomer;
   items: CheckoutItem[];
   idempotencyKey: string | null;
+  discountCode: string | null;
 } {
   const root = asRecord(payload);
   if (!root) {
@@ -152,6 +156,12 @@ export function parseCheckoutPayload(payload: unknown): {
     merged.set(variantId, (merged.get(variantId) ?? 0) + quantity);
   }
 
+  // ---------- كود الخصم ----------
+  const rawCode = trimmedString(root.discountCode).toUpperCase().slice(0, 32);
+  if (rawCode.length > 0 && !/^[A-Z0-9_-]{3,32}$/.test(rawCode)) {
+    fields.discountCode = "كود الخصم غير صحيح.";
+  }
+
   // ---------- مفتاح منع التكرار ----------
   const rawKey = trimmedString(root.idempotencyKey);
   let idempotencyKey: string | null = null;
@@ -179,6 +189,7 @@ export function parseCheckoutPayload(payload: unknown): {
     },
     items: [...merged.entries()].map(([variantId, quantity]) => ({ variantId, quantity })),
     idempotencyKey,
+    discountCode: rawCode.length > 0 ? rawCode : null,
   };
 }
 
@@ -191,6 +202,7 @@ async function findByIdempotencyKey(key: string): Promise<CreatedOrder | null> {
       orderNumber: true,
       status: true,
       grandTotal: true,
+      discountTotal: true,
       currency: true,
       placedAt: true,
     },
@@ -202,6 +214,7 @@ async function findByIdempotencyKey(key: string): Promise<CreatedOrder | null> {
     orderNumber: order.orderNumber,
     status: order.status,
     grandTotal: order.grandTotal.toFixed(2),
+    discountTotal: order.discountTotal.toFixed(2),
     currency: order.currency,
     placedAt: order.placedAt.toISOString(),
   };
@@ -209,6 +222,7 @@ async function findByIdempotencyKey(key: string): Promise<CreatedOrder | null> {
 
 export async function createOrder(input: CreateOrderInput): Promise<CreatedOrder> {
   const { customer, items, idempotencyKey, userId } = input;
+  const discountCode = input.discountCode ?? null;
   // قواعد الشحن والضريبة من إعدادات المتجر لا من ثوابت الكود
   const rules = shippingRulesOf(await getSiteSettings());
 
@@ -288,7 +302,13 @@ export async function createOrder(input: CreateOrderInput): Promise<CreatedOrder
       }
 
       const subtotalCents = lines.reduce((sum, line) => sum + line.lineTotalCents, 0);
-      const totals = computeTotalsFromCents(subtotalCents, rules);
+
+      // الكوبون يُقرأ ويُحسب داخل نفس الـTransaction التي ستستهلكه
+      const coupon = discountCode
+        ? await resolveCoupon(tx, discountCode, subtotalCents)
+        : null;
+
+      const totals = computeTotalsFromCents(subtotalCents, rules, coupon?.discountCents ?? 0);
 
       // رقم تسلسلي من تسلسل PostgreSQL — فريد حتى مع الطلبات المتزامنة
       const [sequence] = await tx.$queryRaw<Array<{ value: bigint }>>`
@@ -307,7 +327,8 @@ export async function createOrder(input: CreateOrderInput): Promise<CreatedOrder
           paymentStatus: "unpaid",
           paymentMethod: "cod",
           subtotal: toSarString(totals.subtotalCents),
-          discountTotal: "0.00",
+          discountTotal: toSarString(totals.discountCents),
+          discountCode: coupon?.code ?? null,
           shippingTotal: toSarString(totals.shippingCents),
           taxTotal: toSarString(totals.vatCents),
           grandTotal: toSarString(totals.totalCents),
@@ -343,10 +364,14 @@ export async function createOrder(input: CreateOrderInput): Promise<CreatedOrder
           orderNumber: true,
           status: true,
           grandTotal: true,
+          discountTotal: true,
           currency: true,
           placedAt: true,
         },
       });
+
+      // استهلاك الكوبون: يفشل الطلب كله (ويُرجَع المخزون) إن استُنفد في هذه اللحظة
+      if (coupon) await redeemCoupon(tx, coupon.code);
 
       // سجل تدقيق لكل خصم مخزون
       await tx.inventoryMovement.createMany({
@@ -362,6 +387,7 @@ export async function createOrder(input: CreateOrderInput): Promise<CreatedOrder
         orderNumber: order.orderNumber,
         status: order.status,
         grandTotal: order.grandTotal.toFixed(2),
+        discountTotal: order.discountTotal.toFixed(2),
         currency: order.currency,
         placedAt: order.placedAt.toISOString(),
       };

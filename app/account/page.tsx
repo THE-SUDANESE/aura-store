@@ -55,16 +55,24 @@ export default async function AccountPage() {
           <p className="mt-2 text-sm text-ink-500">{user.email}</p>
         </div>
 
-        <form
-          action={async () => {
-            "use server";
-            await signOut({ redirectTo: "/" });
-          }}
-        >
-          <Button type="submit" variant="outline" size="md">
-            تسجيل الخروج
-          </Button>
-        </form>
+        <div className="flex flex-wrap items-center gap-2">
+          <Link
+            href="/account/wishlist"
+            className="rounded-full border border-ink-200 px-4 py-2 text-xs text-ink-700 transition-colors hover:border-ink-400"
+          >
+            مفضلتي
+          </Link>
+          <form
+            action={async () => {
+              "use server";
+              await signOut({ redirectTo: "/" });
+            }}
+          >
+            <Button type="submit" variant="outline" size="md">
+              تسجيل الخروج
+            </Button>
+          </form>
+        </div>
       </header>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_2fr] lg:items-start">
@@ -108,7 +116,11 @@ export default async function AccountPage() {
           ) : (
             <ul className="mt-4 divide-y divide-ink-100">
               {user.orders.map((order) => (
-                <li key={order.id} className="flex flex-wrap items-center justify-between gap-3 py-4">
+                <li key={order.id}>
+                  <Link
+                    href={`/account/orders/${order.id}`}
+                    className="flex flex-wrap items-center justify-between gap-3 py-4 transition-colors hover:text-accent-700"
+                  >
                   <div>
                     <p className="text-sm font-medium text-ink-900" dir="ltr">
                       {order.orderNumber}
@@ -125,6 +137,7 @@ export default async function AccountPage() {
                       {formatSAR(Number(order.grandTotal))}
                     </span>
                   </div>
+                  </Link>
                 </li>
               ))}
             </ul>

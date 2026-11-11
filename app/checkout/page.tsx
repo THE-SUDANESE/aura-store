@@ -117,7 +117,56 @@ export default function CheckoutPage() {
     () => items.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0),
     [items],
   );
-  const totals = useMemo(() => computeTotals(subtotal), [subtotal]);
+  // ---------- كود الخصم ----------
+  const [couponInput, setCouponInput] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discount: number } | null>(
+    null,
+  );
+  const [couponError, setCouponError] = useState<string | null>(null);
+  const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
+
+  // الخادم يعيد الحساب النهائي؛ هذا للعرض فقط
+  const totals = useMemo(
+    () => computeTotals(subtotal, undefined, appliedCoupon?.discount ?? 0),
+    [subtotal, appliedCoupon],
+  );
+
+  async function applyCoupon() {
+    const code = couponInput.trim().toUpperCase();
+    setCouponError(null);
+
+    if (code.length < 3) {
+      setCouponError("أدخل كود خصم صحيحاً.");
+      return;
+    }
+
+    setIsApplyingCoupon(true);
+    try {
+      const response = await fetch("/api/coupons/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code, subtotal }),
+      });
+      const payload = await response.json().catch(() => null);
+
+      if (!response.ok || !payload?.success) {
+        setAppliedCoupon(null);
+        setCouponError(
+          payload?.error?.fields?.discountCode ??
+            payload?.error?.message ??
+            "كود الخصم غير صالح.",
+        );
+        return;
+      }
+
+      setAppliedCoupon({ code: payload.data.code, discount: payload.data.discount });
+      setCouponInput(payload.data.code);
+    } catch {
+      setCouponError("تعذّر التحقق من الكود. حاول مجدداً.");
+    } finally {
+      setIsApplyingCoupon(false);
+    }
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -151,6 +200,7 @@ export default function CheckoutPage() {
           customer: values,
           items: items.map((item) => ({ variantId: item.variantId, quantity: item.quantity })),
           paymentMethod: "cod",
+          discountCode: appliedCoupon?.code ?? null,
           idempotencyKey: idempotencyKeyRef.current,
         }),
       });
@@ -397,11 +447,65 @@ export default function CheckoutPage() {
             ))}
           </ul>
 
+          <div className="mt-4 rounded-2xl border border-dashed border-ink-200 p-3">
+            <label htmlFor="discountCode" className="text-[11px] font-medium text-ink-700">
+              كود الخصم
+            </label>
+            <div className="mt-2 flex gap-2">
+              <input
+                id="discountCode"
+                name="discountCode"
+                type="text"
+                value={couponInput}
+                onChange={(event) => setCouponInput(event.target.value.toUpperCase())}
+                placeholder="مثال: AURA10"
+                maxLength={32}
+                autoComplete="off"
+                className="h-10 min-w-0 flex-1 rounded-xl border border-ink-200 bg-white px-3 text-xs uppercase text-ink-900 outline-none focus:border-ink-900"
+              />
+              <button
+                type="button"
+                onClick={applyCoupon}
+                disabled={isApplyingCoupon}
+                className="h-10 shrink-0 rounded-xl border border-ink-900 px-4 text-xs font-medium text-ink-900 transition-colors hover:bg-ink-900 hover:text-white disabled:opacity-50"
+              >
+                {isApplyingCoupon ? "جارٍ التحقق…" : "تطبيق"}
+              </button>
+            </div>
+            {couponError && (
+              <p role="alert" className="mt-2 text-[11px] text-warning-700">
+                {couponError}
+              </p>
+            )}
+            {appliedCoupon && (
+              <p className="mt-2 flex items-center justify-between gap-2 text-[11px] text-accent-700">
+                <span>تم تطبيق {appliedCoupon.code}</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAppliedCoupon(null);
+                    setCouponInput("");
+                    setCouponError(null);
+                  }}
+                  className="text-ink-500 underline underline-offset-2"
+                >
+                  إزالة
+                </button>
+              </p>
+            )}
+          </div>
+
           <dl className="mt-4 space-y-2 border-t border-ink-100 pt-4 text-sm">
             <div className="flex items-center justify-between gap-3">
               <dt className="text-ink-600">المجموع الفرعي</dt>
               <dd className="text-ink-900">{formatSAR(totals.subtotal)}</dd>
             </div>
+            {totals.discount > 0 && (
+              <div className="flex items-center justify-between gap-3">
+                <dt className="text-ink-600">الخصم{appliedCoupon ? ` (${appliedCoupon.code})` : ""}</dt>
+                <dd className="font-medium text-accent-700">-{formatSAR(totals.discount)}</dd>
+              </div>
+            )}
             <div className="flex items-center justify-between gap-3">
               <dt className="text-ink-600">الشحن</dt>
               <dd className={totals.shipping === 0 ? "font-medium text-accent-700" : "text-ink-900"}>

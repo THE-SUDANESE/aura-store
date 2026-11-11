@@ -21,7 +21,7 @@ import type {
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-const productInclude = {
+export const productInclude = {
   category: {
     select: { id: true, slug: true, nameAr: true, nameEn: true },
   },
@@ -156,8 +156,25 @@ function toProductDetail(row: ProductRow): ProductDetailDto {
   };
 }
 
+/** خيارات الترتيب المتاحة في واجهة المتجر — قيمة غير معروفة تُعاد إلى الافتراضي. */
+export const PRODUCT_SORTS = ["featured", "newest", "price_asc", "price_desc"] as const;
+export type ProductSort = (typeof PRODUCT_SORTS)[number];
+
+export function toProductSort(value: string | null | undefined): ProductSort {
+  return PRODUCT_SORTS.includes(value as ProductSort) ? (value as ProductSort) : "featured";
+}
+
+const ORDER_BY: Record<ProductSort, Prisma.ProductOrderByWithRelationInput[]> = {
+  featured: [{ isFeatured: "desc" }, { createdAt: "desc" }],
+  newest: [{ createdAt: "desc" }],
+  price_asc: [{ basePrice: "asc" }, { createdAt: "desc" }],
+  price_desc: [{ basePrice: "desc" }, { createdAt: "desc" }],
+};
+
 export type ListProductsOptions = {
   category?: string | null;
+  search?: string | null;
+  sort?: ProductSort;
   page?: number;
   pageSize?: number;
 };
@@ -166,17 +183,30 @@ export async function listProducts(options: ListProductsOptions = {}): Promise<P
   const page = Math.max(1, Math.trunc(options.page ?? 1));
   const pageSize = Math.min(96, Math.max(1, Math.trunc(options.pageSize ?? 24)));
 
+  // حد الطول يمنع استعلامات ضخمة عبر الرابط
+  const term = (options.search ?? "").trim().slice(0, 60);
+
   const where: Prisma.ProductWhereInput = {
     deletedAt: null,
     status: "active",
     ...(options.category ? { category: { slug: options.category } } : {}),
+    ...(term
+      ? {
+          OR: [
+            { nameAr: { contains: term, mode: "insensitive" } },
+            { nameEn: { contains: term, mode: "insensitive" } },
+            { shortDescription: { contains: term, mode: "insensitive" } },
+            { variants: { some: { sku: { contains: term, mode: "insensitive" } } } },
+          ],
+        }
+      : {}),
   };
 
   const [rows, total] = await prisma.$transaction([
     prisma.product.findMany({
       where,
       include: productInclude,
-      orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
+      orderBy: ORDER_BY[options.sort ?? "featured"],
       skip: (page - 1) * pageSize,
       take: pageSize,
     }),

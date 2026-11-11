@@ -9,6 +9,7 @@ import { ORDER_STATUS_LABELS } from "@/lib/admin/order-status";
 import { requireAdmin } from "@/lib/auth/roles";
 import { formatNumber, formatSAR } from "@/lib/format";
 import { listInventory, listRecentOrders } from "@/lib/server/admin";
+import { getSalesSummary } from "@/lib/server/reports";
 
 export const metadata: Metadata = {
   title: "لوحة التحكم",
@@ -71,7 +72,11 @@ export default async function AdminPage() {
   const admin = await getAdminOrNull();
   if (!admin) return <AccessDenied />;
 
-  const [orders, inventory] = await Promise.all([listRecentOrders(20), listInventory(60)]);
+  const [orders, inventory, summary] = await Promise.all([
+    listRecentOrders(20),
+    listInventory(60),
+    getSalesSummary(),
+  ]);
 
   const pendingCount = orders.filter((order) => order.status === "pending").length;
   const lowStockCount = inventory.filter(
@@ -92,29 +97,57 @@ export default async function AdminPage() {
           </p>
         </div>
 
-        <Link
-          href="/shop"
-          className="rounded-full border border-ink-200 px-4 py-2 text-xs text-ink-700 transition-colors hover:border-ink-400"
-        >
-          عرض المتجر
-        </Link>
+        <div className="flex flex-wrap gap-2">
+          <a
+            href="/api/admin/orders/export"
+            className="rounded-full border border-ink-200 px-4 py-2 text-xs text-ink-700 transition-colors hover:border-ink-400"
+          >
+            تصدير الطلبات CSV
+          </a>
+          <Link
+            href="/shop"
+            className="rounded-full border border-ink-200 px-4 py-2 text-xs text-ink-700 transition-colors hover:border-ink-400"
+          >
+            عرض المتجر
+          </Link>
+        </div>
       </header>
 
       {/* ---------- مؤشرات سريعة ---------- */}
-      <div className="mt-6 grid gap-3 sm:grid-cols-3">
+      <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-2xl border border-ink-100 bg-white p-4 shadow-card">
-          <p className="text-xs text-ink-500">طلبات معروضة</p>
-          <p className="mt-1 text-2xl font-semibold text-ink-900">{formatNumber(orders.length)}</p>
+          <p className="text-xs text-ink-500">إيراد آخر ٣٠ يوماً</p>
+          <p className="mt-1 text-2xl font-semibold text-ink-900">
+            {formatSAR(summary.revenue30d)}
+          </p>
+          <p className="mt-1 text-[11px] text-ink-400">
+            {formatNumber(summary.orders30d)} طلب — متوسط {formatSAR(summary.averageOrder)}
+          </p>
+        </div>
+        <div className="rounded-2xl border border-ink-100 bg-white p-4 shadow-card">
+          <p className="text-xs text-ink-500">مبيعات اليوم</p>
+          <p className="mt-1 text-2xl font-semibold text-ink-900">
+            {formatSAR(summary.revenueToday)}
+          </p>
+          <p className="mt-1 text-[11px] text-ink-400">
+            {formatNumber(summary.ordersToday)} طلب اليوم
+          </p>
         </div>
         <div className="rounded-2xl border border-ink-100 bg-white p-4 shadow-card">
           <p className="text-xs text-ink-500">بانتظار التأكيد</p>
-          <p className="mt-1 text-2xl font-semibold text-warning-700">{formatNumber(pendingCount)}</p>
+          <p className="mt-1 text-2xl font-semibold text-warning-700">
+            {formatNumber(summary.pendingOrders)}
+          </p>
+          <p className="mt-1 text-[11px] text-ink-400">
+            {formatNumber(pendingCount)} منها ضمن آخر الطلبات
+          </p>
         </div>
         <div className="rounded-2xl border border-ink-100 bg-white p-4 shadow-card">
           <p className="text-xs text-ink-500">متغيرات منخفضة المخزون</p>
           <p className="mt-1 text-2xl font-semibold text-warning-700">
-            {formatNumber(lowStockCount)}
+            {formatNumber(Math.max(lowStockCount, summary.lowStockCount))}
           </p>
+          <p className="mt-1 text-[11px] text-ink-400">تحت حد التنبيه لكل متغير</p>
         </div>
       </div>
 
@@ -184,6 +217,12 @@ export default async function AdminPage() {
                         >
                           {ORDER_STATUS_LABELS[order.status]}
                         </span>
+                        <Link
+                          href={`/admin/orders/${order.id}/invoice`}
+                          className="w-fit text-[11px] text-ink-500 underline underline-offset-4 hover:text-ink-900"
+                        >
+                          فاتورة
+                        </Link>
                         <OrderStatusSelect
                           orderId={order.id}
                           orderNumber={order.orderNumber}

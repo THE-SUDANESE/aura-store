@@ -6,6 +6,10 @@ import { VariantPicker } from "@/components/products/VariantPicker";
 import { formatSAR } from "@/lib/format";
 import { getProductDetail } from "@/lib/server/products";
 import { getProductReviews } from "@/lib/server/reviews";
+import { auth } from "@/auth";
+import { ReviewForm } from "@/components/products/ReviewForm";
+import { WishlistButton } from "@/components/products/WishlistButton";
+import { prisma } from "@/lib/db";
 
 type ProductPageProps = {
   params: Promise<{ slug: string }>;
@@ -82,7 +86,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   if (!product) notFound();
 
-  const reviews = await getProductReviews(product.id);
+  const [reviews, session] = await Promise.all([getProductReviews(product.id), auth()]);
+
+  const isWishlisted = session?.user?.id
+    ? Boolean(
+        await prisma.wishlistItem.findUnique({
+          where: { userId_productId: { userId: session.user.id, productId: product.id } },
+          select: { id: true },
+        }),
+      )
+    : false;
 
   const isEyewear = product.type === "sunglasses";
   const specEntries = Object.entries(product.specs ?? {}).filter(
@@ -221,6 +234,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
               colorLabel={isEyewear ? "لون الإطار" : "اللون"}
               sizeLabel={isEyewear ? "مقاس العدسة" : "المقاس"}
             />
+            <div className="mt-4">
+              <WishlistButton productId={product.id} initialInWishlist={isWishlisted} />
+            </div>
           </div>
 
           {/* مزايا الشراء */}
@@ -340,6 +356,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </ul>
           </div>
         )}
+
+        <div className="mt-8">
+          <ReviewForm
+            productId={product.id}
+            isAuthenticated={Boolean(session?.user?.id)}
+            loginHref={`/auth/login?redirect=/product/${product.slug}`}
+          />
+        </div>
       </section>
     </div>
   );
