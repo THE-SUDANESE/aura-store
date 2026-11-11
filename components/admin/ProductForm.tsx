@@ -37,6 +37,7 @@ export function ProductForm({ initial, categories, badges }: Props) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [message, setMessage] = useState<{ type: "ok" | "error"; text: string } | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const set = <K extends keyof AdminProductInput>(key: K, value: AdminProductInput[K]) =>
     setForm((current) => ({ ...current, [key]: value }));
@@ -54,6 +55,44 @@ export function ProductForm({ initial, categories, badges }: Props) {
       ...current,
       images: current.images.map((image, i) => (i === index ? { ...image, ...patch } : image)),
     }));
+
+  /** رفع صورة من جهاز المشرف إلى التخزين الخارجي ثم إضافتها للقائمة. */
+  async function handleImageUpload(file: File) {
+    setIsUploading(true);
+    setMessage(null);
+
+    try {
+      const body = new FormData();
+      body.append("file", file);
+
+      const response = await fetch("/api/admin/uploads", { method: "POST", body });
+      const payload = await response.json().catch(() => null);
+
+      if (!response.ok || !payload?.success) {
+        setMessage({ type: "error", text: payload?.error?.message ?? "تعذّر رفع الصورة." });
+        return;
+      }
+
+      const url: string = payload.data.url;
+      setForm((current) => ({
+        ...current,
+        images: [
+          ...current.images,
+          {
+            url,
+            altAr: "",
+            sortOrder: current.images.length,
+            isPrimary: current.images.length === 0,
+          },
+        ],
+      }));
+      setMessage({ type: "ok", text: "تم رفع الصورة وأُضيفت للقائمة." });
+    } catch {
+      setMessage({ type: "error", text: "تعذّر الاتصال بالخادم." });
+    } finally {
+      setIsUploading(false);
+    }
+  }
 
   /** ترتيب الصور يحدد ترتيب العرض في صفحة المنتج — نعيد ترقيم sortOrder دائماً. */
   const moveImage = (from: number, to: number) =>
@@ -590,9 +629,34 @@ export function ProductForm({ initial, categories, badges }: Props) {
           <span className="text-[11px] text-ink-400">حتى ١٢ صورة</span>
         </div>
         <p className="mt-1.5 text-[11px] leading-5 text-ink-400">
-          الصق رابط الصورة (يبدأ بـ / أو https://). رفع الملفات مباشرة يحتاج تخزيناً خارجياً
-          (Vercel لا يسمح بالكتابة على القرص) — الروابط تعمل الآن بلا أي اعتماد إضافي.
+          ارفع الصور من جهازك مباشرة، أو الصق رابطاً يبدأ بـ / أو https://.
         </p>
+
+        <div className="mt-3 flex flex-wrap items-center gap-3 rounded-2xl border border-dashed border-ink-200 p-3">
+          <label
+            className={
+              isUploading
+                ? "cursor-wait rounded-full bg-ink-400 px-4 py-2 text-xs font-medium text-white"
+                : "cursor-pointer rounded-full bg-ink-900 px-4 py-2 text-xs font-medium text-white transition-colors hover:bg-ink-800"
+            }
+          >
+            {isUploading ? "جارٍ رفع الصورة…" : "رفع صورة من الجهاز"}
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/avif"
+              className="sr-only"
+              disabled={isUploading}
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                if (file) void handleImageUpload(file);
+                event.currentTarget.value = "";
+              }}
+            />
+          </label>
+          <span className="text-[11px] text-ink-400">
+            JPG أو PNG أو WebP أو AVIF — حتى ٤ ميجابايت.
+          </span>
+        </div>
 
         <ul className="mt-4 space-y-2">
           {form.images.map((image, index) => (
