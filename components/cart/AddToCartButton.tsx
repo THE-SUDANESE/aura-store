@@ -68,7 +68,11 @@ export function AddToCartButton({ product }: { product: ProductSummaryDto }) {
       className="mt-4"
       disabled={isSoldOut}
       onClick={handleClick}
-      aria-label={isSoldOut ? `${product.name} غير متوفر` : `إضافة ${product.name} إلى السلة`}
+      aria-label={
+        isSoldOut
+          ? `${product.name.ar} غير متوفر`
+          : `إضافة ${product.name.ar} إلى السلة`
+      }
     >
       {isSoldOut ? "غير متوفر" : justAdded ? "تمت الإضافة ✓" : "أضف إلى السلة"}
     </Button>

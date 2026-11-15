@@ -97,7 +97,8 @@ export function SiteHeader({ nav = DEFAULT_SETTINGS.nav }: { nav?: NavLink[] }) 
             <SearchIcon />
           </Link>
 
-          <Link href="/auth/login" className={iconButtonClasses} aria-label="تسجيل الدخول">
+          {/* للمسجّل يفتح حسابه، وللزائر يعيده الـ middleware إلى صفحة الدخول */}
+          <Link href="/account" className={iconButtonClasses} aria-label="حسابي">
             <UserIcon />
           </Link>
 
