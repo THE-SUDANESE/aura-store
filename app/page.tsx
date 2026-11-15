@@ -26,7 +26,7 @@ export default async function HomePage() {
     <div className="min-h-screen">
       {/* Hero — كل نصوصه من /admin/settings */}
       <section className="relative overflow-hidden bg-desert-50 py-20 lg:py-32">
-        <div className="shell max-w-2xl text-center">
+        <div className="shell relative z-10 max-w-2xl text-center">
           <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.3em] text-accent-700">
             {hero.eyebrow}
           </p>
@@ -45,7 +45,7 @@ export default async function HomePage() {
         </div>
 
         <div
-          className="absolute -top-1/2 right-0 h-full w-96 rotate-6 bg-desert-100 opacity-50"
+          className="pointer-events-none absolute -top-1/2 right-0 h-full w-96 rotate-6 bg-desert-100 opacity-50"
           aria-hidden="true"
         />
       </section>
