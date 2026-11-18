@@ -1,5 +1,6 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "@/lib/db";
+import { PRODUCTS_TAG } from "@/lib/server/products";
 import { AppError } from "@/lib/http";
 import { SETTINGS_TAG } from "@/lib/server/settings";
 
@@ -12,6 +13,9 @@ function str(value: unknown, max = 200): string {
 
 function refreshCatalog() {
   revalidateTag(SETTINGS_TAG);
+  // الفئات والشارات تظهر على بطاقات المنتجات، فكاش الكتالوج يُبطل معها
+  revalidateTag(PRODUCTS_TAG);
+  revalidatePath("/");
   revalidatePath("/shop");
   revalidatePath("/admin/products");
 }

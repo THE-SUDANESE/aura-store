@@ -11,7 +11,9 @@ type InfoPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export const dynamic = "force-dynamic";
+// محتوى الصفحات يتغيّر عند الحفظ من اللوحة فقط، و`revalidatePath` يُبطلها فوراً
+// حتى لا يعيد الزائر بناء الصفحة كل مرة.
+export const revalidate = 300;
 
 export async function generateMetadata({ params }: InfoPageProps): Promise<Metadata> {
   const { slug } = await params;

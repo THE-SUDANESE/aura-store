@@ -1,4 +1,5 @@
 import type { Prisma } from "@prisma/client";
+import { unstable_cache } from "next/cache";
 import { VAT_RATE } from "@/lib/checkout/pricing";
 import { prisma } from "@/lib/db";
 import type {
@@ -179,7 +180,7 @@ export type ListProductsOptions = {
   pageSize?: number;
 };
 
-export async function listProducts(options: ListProductsOptions = {}): Promise<ProductListDto> {
+async function queryProducts(options: ListProductsOptions): Promise<ProductListDto> {
   const page = Math.max(1, Math.trunc(options.page ?? 1));
   const pageSize = Math.min(96, Math.max(1, Math.trunc(options.pageSize ?? 24)));
 
@@ -216,8 +217,27 @@ export async function listProducts(options: ListProductsOptions = {}): Promise<P
   return { items: rows.map(toProductSummary), total, page, pageSize };
 }
 
+/**
+ * كاش الكتالوج.
+ *
+ * كل صفحات المتجر كانت تُنفّذ استعلامات Neon في كل زيارة، وكل استعلام يقطع
+ * مسافة الشبكة كاملة. تخزين النتيجة ٦٠ ثانية يخفض زمن أول بايت بشكل كبير،
+ * و`PRODUCTS_TAG` يضمن أن أي تعديل من لوحة التحكم (أو بيع ينقص المخزون)
+ * يُبطل الكاش فوراً بدل انتظار المدة.
+ */
+export const PRODUCTS_TAG = "catalog-products";
+
+const cachedListProducts = unstable_cache(queryProducts, ["products-list-v1"], {
+  tags: [PRODUCTS_TAG],
+  revalidate: 60,
+});
+
+export function listProducts(options: ListProductsOptions = {}): Promise<ProductListDto> {
+  return cachedListProducts(options);
+}
+
 /** يقبل slug أو UUID، ويتجاهل المنتجات غير المنشورة أو المحذوفة. */
-export async function getProductDetail(key: string): Promise<ProductDetailDto | null> {
+async function queryProductDetail(key: string): Promise<ProductDetailDto | null> {
   const normalizedKey = key.trim();
   if (!normalizedKey) return null;
 
@@ -233,4 +253,13 @@ export async function getProductDetail(key: string): Promise<ProductDetailDto | 
   });
 
   return row ? toProductDetail(row) : null;
+}
+
+const cachedProductDetail = unstable_cache(queryProductDetail, ["product-detail-v1"], {
+  tags: [PRODUCTS_TAG],
+  revalidate: 60,
+});
+
+export function getProductDetail(key: string): Promise<ProductDetailDto | null> {
+  return cachedProductDetail(key);
 }

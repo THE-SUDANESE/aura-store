@@ -1,6 +1,8 @@
 import { Prisma } from "@prisma/client";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "@/lib/db";
 import { AppError } from "@/lib/http";
+import { PRODUCTS_TAG } from "@/lib/server/products";
 import type {
   AdminImageInput,
   AdminProductInput,
@@ -238,11 +240,19 @@ function uniqueError(error: unknown): never {
   throw error;
 }
 
+/** أي تعديل في الكتالوج يجب أن يمسح كاش المنتجات وصفحات المتجر في نفس الطلب. */
+function refreshStorefront(slug?: string) {
+  revalidateTag(PRODUCTS_TAG);
+  revalidatePath("/");
+  revalidatePath("/shop");
+  if (slug) revalidatePath(`/product/${slug}`);
+}
+
 export async function createProduct(input: AdminProductInput) {
   const { data, variants, images, badgeIds } = parseProductInput(input);
 
   try {
-    return await prisma.product.create({
+    const created = await prisma.product.create({
       data: {
         ...data,
         publishedAt: data.status === "active" ? new Date() : null,
@@ -275,6 +285,9 @@ export async function createProduct(input: AdminProductInput) {
       },
       select: { id: true, slug: true },
     });
+
+    refreshStorefront(created.slug);
+    return created;
   } catch (error) {
     uniqueError(error);
   }
@@ -290,7 +303,7 @@ export async function updateProduct(id: string, input: AdminProductInput) {
   if (!existing) throw new AppError("NOT_FOUND", "المنتج غير موجود.", 404);
 
   try {
-    return await prisma.$transaction(async (tx) => {
+    const saved = await prisma.$transaction(async (tx) => {
       await tx.product.update({
         where: { id },
         data: {
@@ -361,6 +374,9 @@ export async function updateProduct(id: string, input: AdminProductInput) {
 
       return { id, slug: data.slug };
     });
+
+    refreshStorefront(saved.slug);
+    return saved;
   } catch (error) {
     uniqueError(error);
   }
@@ -376,6 +392,7 @@ export async function softDeleteProduct(id: string) {
     data: { deletedAt: new Date(), status: "archived", isFeatured: false },
   });
 
+  refreshStorefront();
   return { id };
 }
 

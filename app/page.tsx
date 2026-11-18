@@ -9,8 +9,9 @@ export const metadata: Metadata = {
   description: "اكتشف مجموعة من النظارات الشمسية والأزياء ذات الجودة العالية",
 };
 
-// المنتجات والإعدادات متغيّرة: لا نُجمّد الصفحة
-export const dynamic = "force-dynamic";
+// الصفحة تُبنى مسبقاً وتُحدَّث كل دقيقة، فيراها الزائر من أقرب حافة (Edge)
+// بدل انتظار تنفيذ دالة في منطقة بعيدة. تعديلات اللوحة تُبطلها فوراً عبر revalidatePath.
+export const revalidate = 60;
 
 const BEST_SELLERS_COUNT = 6;
 

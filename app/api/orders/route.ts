@@ -1,9 +1,12 @@
 import { randomUUID } from "node:crypto";
-import type { NextRequest } from "next/server";
+import { after, type NextRequest } from "next/server";
+import { revalidateTag } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/db";
 import { AppError, assertSameOrigin, ok, toErrorResponse } from "@/lib/http";
+import { sendOrderNotifications } from "@/lib/server/mailer";
 import { createOrder, parseCheckoutPayload } from "@/lib/server/orders";
+import { PRODUCTS_TAG } from "@/lib/server/products";
 import { clientIp, enforceRateLimit } from "@/lib/server/rate-limit";
 
 /**
@@ -46,6 +49,13 @@ export async function POST(request: NextRequest) {
     }
 
     const order = await createOrder({ ...parsed, userId });
+
+    // المخزون نقص فعلاً: لا نترك صفحات المتجر تعرض كمية قديمة
+    revalidateTag(PRODUCTS_TAG);
+
+    // البريد يعمل بعد إرسال الرد: لا يؤخّر العميل، وفشله لا يُفشل الطلب.
+    // بلا RESEND_API_KEY لا يحدث شيء.
+    after(() => sendOrderNotifications(order.orderNumber));
 
     return ok(order, requestId, 201);
   } catch (error) {
