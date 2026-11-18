@@ -67,7 +67,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   },
   contact: {
     whatsapp: "966500000000",
-    email: "hello@aura.sa",
+    email: "aura.store.jed@gmail.com",
     phoneDisplay: "+966 50 000 0000",
     address: "الرياض، المملكة العربية السعودية",
   },
